@@ -1,0 +1,95 @@
+https://www.codepile.net/pile/w4zxjXP8
+
+/*Tydzień temu napisalismy rozwiązanie z niezmiennikiem intuicyjnie wyrażonym rysunkiem:
+
+cccc????bbb
+
+Dziś zrobimy flagę polską na II sposób; będziemy starali się napisać program dla którego niezmiennik będzie miał postać:   ccccbbbbb?????
+
+Mamy n urn z żetonami białymi i czerwonymi
+*/
+
+*/
+
+int kc;
+int kb;
+
+kc = 1;
+kb = 1;
+
+while (kb<=n)
+{
+//Dla każdego k 1<=k<kc Kol(k) = czerwony
+//Dla każdego k kc<=k<kb Kol(k) = biały
+//1 <= kc <= kb <= n+1
+	if (Kol(kb) == biały)
+	{	
+		kb = kb + 1;
+	}
+	else
+	{
+		if(kb != kc)
+		{
+			Z(kb, kc);
+		}
+        	kc = kc + 1;
+        	kb = kb + 1;
+        }
+    
+}  
+
+// pesymistycznie n-1 zamian dla bcccccccccc
+
+
+
+https://www.codepile.net/pile/l12VWw14
+
+Flaga Holenderska
+
+//cccbbb????nnn
+// mamy n urn 
+
+int kc = 1;
+int kb = 1;
+int kn = n;
+
+while (kb <= kn)
+// Dla każdego k 1<=k<kc Kol(k) == czerwony
+// Dla każdego k kc<=k<kb Kol(k) == biały
+// Dla każdego k kn<k<=n Kol(k) == niebieski
+//1 <= kc <= kb <= kn + 1
+// kn <= n
+
+{
+    if (Kol(kb) == biały)
+    {
+        kb = kb + 1;
+    }
+    else if (Kol(kb) == czerwony)
+    {
+        if(kb != kc)
+		{
+			Z(kb, kc);
+	    }
+        kc = kc + 1;
+        kb = kb + 1;
+    }
+    else //Kol(kb) == niebieski
+    {
+        while ((kn > kb) && Kol(kn) == niebieski))
+        // Dla każdego k 1<=k<kc Kol(k) == czerwony
+        // Dla każdego k kc<=k<kb Kol(k) == biały
+        // Dla każdego k kn<k<=n Kol(k) == niebieski
+        //1 <= kc <= kb <= kn <= n
+        // Kol(kb) == niebieski
+        
+        {
+            kn = kn - 1;
+        }
+        if (kn != kb)
+        {
+            Z(kn, kb);
+        }
+        kn = kn - 1;
+    }
+}

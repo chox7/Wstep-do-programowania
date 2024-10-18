@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+int jest(int a[], int n, int x, int y)
+{
+    if(n < 2)
+        return 0;
+    int l = 1, p = n - 1;
+    while(l < p)
+    {
+        int s = (l + p) / 2;
+        if(a[s - 1] + a[s] > y)
+            l = s + 1;
+        else
+            p = s;
+    }
+    int suma = a[l] + a[l - 1];
+    if(suma > y || suma <= x)
+        return suma;
+    else
+        return l;
+}
+
+int main()
+{
+    int A[N], n, x, y;
+    scanf("%d%d%d", &n, &x, &y);
+    wejscie(A, n);
+
+    printf("\n%d\n", jest(A, n, x, y));
+    return 0;
+}

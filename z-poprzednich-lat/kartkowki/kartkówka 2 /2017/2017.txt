@@ -1,0 +1,29 @@
+#include <stdio.h>
+#define N_MAX 100
+
+int main() {
+	int tab [N_MAX];
+	int N;
+	scanf("%d", &N);
+	for (int k=0; k<N; k++) {
+        scanf("%d", &tab[k]);
+	}
+	int j=0, sum=0, max=0, podzial=0, i, i_max;
+	for (i=0; i<N; i++) {
+		sum+=tab[i];
+	}
+	podzial=sum;
+	while (j<N && podzial+N-j>max) {
+		if (tab[j]==0) {
+			podzial++;
+			if (podzial>max) {
+				max=podzial;
+				i_max=j;
+			}
+		}
+		else podzial--;
+		j++;
+	}
+	printf ("%d", i_max);
+	return 0;
+}

@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+#define MAX_N 100
+
+void wejscie(int n, int t[])
+{
+    for(int i = 1; i <= n; ++i) /* dla wygody beierzemy tablicę o jedną komórkę większą
+    wówczas w pierwszej komórce jest śmieć */
+        scanf("%d", &t[i]);
+}
+
+void jeden(int n, int skad, int dokad)
+{
+    printf("przenosze krazek o numerze %d z wiezy o numerze %d na wieze o numerze %d", n, skad, dokad);
+}
+
+void tradH(int n, int s, int d)
+{
+    if(!n)
+        return;
+    int pomocnicza = 6 - s - d;
+    tradH(n - 1, s, pomocnicza);
+    jeden(n, s, d);
+    tradH(n - 1, pomocnicza, d);
+}
+
+void H(int n, int s, int A[])
+{
+    if(!n)
+        return;
+    if(s == A[n])
+        H(n - 1, s, A);
+    else
+    {
+        int pomocnicza = 6 - s - A[n];
+        tradH(n - 1, s, pomocnicza);
+        jeden(n, s, A[n]);
+        H(n - 1, pomocnicza, A);
+    }
+}
+
+void uporzadkuj(int t[], int N)
+{
+    H(N, 1, t);
+}
+
+int main()
+{
+    int A[MAX_N], N;
+    scanf("%d", &N);
+    wejscie(N, A);
+    uporzadkuj(A, N);
+    return 0;
+}

@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+int wspolne(int A[], int B[], int n)
+{
+    int wspolne = 0, i = 0, j = 0, stanA = 1; // stanA == 1 jeśli A[i - 1] != A[i] i zero jeśli warunek niezachowany. Dla i == 0 mamy 1
+    while(i < n)
+    {
+        if(stanA)
+        {
+            while(j < n && B[j] < A[i]) // po wykonaniu tej pętli mamy indeks j taki, że B[j] >= A[i]
+                j++;
+            if(j < n)
+            {
+                if(B[j] == A[i])
+                    wspolne++;
+                j++;
+                while(j < n && B[j] == B[j - 1]) // szukamy teraz j taki, że B[j] > A[i]
+                    j++;
+            }
+            if(i + 1 < n && A[i + 1] == A[i])
+                stanA = 0;
+        }
+        if(i + 1 < n && A[i + 1] != A[i])
+            stanA = 1;
+        i++;
+    }
+    return wspolne;
+}
+
+int main()
+{
+    int n, A[N], B[N];
+    scanf("%d", &n);
+    wejscie(A, n);
+    wejscie(B, n);
+    printf("\n%d\n", wspolne(A, B, n));
+    return 0;
+}

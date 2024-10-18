@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define n 100
+#define m 100
+
+void wejscie(int N, int M, int A[][M])
+{
+    for(int i = 0; i < N; ++i)
+        for(int j = 0; j < M; ++j)
+            scanf("%d", &A[i][j]);
+}
+
+bool posortowana(int N, int M, int A[][M])
+{
+    bool wynik = true;
+    for(int i = 0; i < N && wynik; ++i)
+    {
+        for(int j = 1; j < M && wynik; ++j)
+        {
+            if(A[i][j] < A[i][j - 1])
+                wynik = false;
+        }
+    }
+    return wynik;
+}
+
+int main()
+{
+    int N, M, A[n][m];
+    scanf("%d%d", &N, &M);
+    wejscie(N, M, A);
+    printf("\n%d", posortowana(N, M, A));
+    return 0;
+}

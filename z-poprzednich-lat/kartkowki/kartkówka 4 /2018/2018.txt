@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+int sumaKwadratow(int n, int m, int tab[])
+{
+    int wynik = 0;
+    int a = m, b = 0;
+    int granica = (m + 1) * (m + 1); // zeby nie liczyc za kazdym razem w petli
+    while(a >= b && !wynik)
+    {
+        int suma = a * a + b * b;
+        while(suma < granica && !wynik)
+        {
+            if(suma == n)
+            {
+                wynik = 1;
+                tab[0] = a;
+                tab[1] = b;
+            }
+            else
+            {
+                b++;
+                suma = a * a + b * b;
+            }
+        }
+        a--;
+    }
+    return wynik;
+}
+
+int main()
+{
+    int n, m, tab[2] = {};
+    scanf("%d%d", &n, &m);
+    printf("%d\n", sumaKwadratow(n, m, tab));
+    printf("%d * %d + %d * %d = %d", tab[0], tab[0], tab[1], tab[1], tab[0] * tab[0] + tab[1] * tab[1]);
+    return 0;
+}

@@ -1,0 +1,71 @@
+https://www.codepile.net/pile/PyPbPzx3
+
+Mamy daną tablicę liczb. Znajdź w niej najdłuższy fragment stały.
+// 1 3 2 2 2 4 5 5 5 2
+
+
+
+// #define 5
+
+int a[N]; //deklaracja tablicy int o długości N
+
+//a[0], a[1], ... a[N-1]
+
+int x;
+
+x:= a[0];
+
+a[0]:= 33;
+
+a[x]:= a[x+1];
+a[a[x]]:= 7;
+
+
+Dana jest deklaracja int a[3]; Napisz fragment programu obliczający rozmiar zbioru (bez powtórzeń) elementów tablicy a. Podaj liczbę porównań w przypadku pesymistycznym działania Twojego algorytmu. Załóż, że koszt każdego z porównań "x=y", "x!=y", 
+    "x<y" , "x<=y", "x>y", "x>=y" jest taki sam.
+    
+    3+2=5
+    3
+    int i=1;
+    if (a[0]!=a[1])
+        i = i+1;
+    if ((a[0]!=a[2])&&(a[1]!=a[2]))
+        i=i+1;
+----------------------------------------------------------------------------------------------        
+    int max; 
+    if (N==0) {
+        max=0;}
+    else {
+    max=1;
+    int i=0;
+    int aktual=1;
+    int indeks_max =0;
+    int indeks = 0;
+    
+    while (i<N-1) //1<=max <=N!=0, 1<=aktual<=N, 0<=i<=N-1
+    // max = długość najdłuższego maksymalnego fragmentu stałego w tablicy od 0 do i niekończącego sie w a[i]
+    // indeks_max - początek najdłuższego maksymalnego fragmentu stałego w tablicy od 0 do i niekończącego sie w a[i]
+    // aktual - długość najdłuższego fragmentu stałego końcżącego się w a[i]
+    // indeks - początek najdłuższego fragmentu stałego kończącego się w a[i]
+        if (a[i]==a[i+1]) {
+            aktual=aktual+1;
+           
+        }
+        else {
+            if(aktual>=max) {
+                max = aktual;
+                indeks_max = indeks;
+            }
+            aktual = 1;
+            indeks = i+1;
+        }
+        i=i+1;
+        
+    }
+    if(aktual>=max) {
+        max = aktual;
+        indeks_max = indeks;
+    }
+
+        
+        

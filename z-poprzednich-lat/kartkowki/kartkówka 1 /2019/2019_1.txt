@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() { //zalozmy ze 0 to bialy, 1 to czerwony
+	int MniejCzerwonych=i=1, b=c=0;
+	while (MniejCzerwonych==1 && i<=n && b<=n/2) {
+		if (Kol(i)==0) b++;
+		else c++;
+		if (c>=b) MniejCzerwonych=0;
+		i++;
+	}
+	printf("%d", MniejCzerwonych);
+	return 0;
+}

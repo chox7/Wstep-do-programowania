@@ -1,0 +1,48 @@
+https://www.codepile.net/pile/ZnbeZ0E5
+
+
+Zad2.  Napisz gramatykę generującą język słów L nad 0,1 o nieparzystej liczbie zer.      
+
+L =L(X)
+X -> 0 | 1X | 0X0 | X1
+L=L(S)
+S -> 0 | 1S | 0J0JS | S1
+L= L(W)
+W -> J0J | J0J0JW   
+
+J -> e | 1J
+
+
+G={{P,N}, {0,1}, produkcje poniżej, N}
+P -> e | 0N | 1P 
+N -> 0P | 1N  
+
+L(N) = L 
+
+Dowód pełności: L \subseteq L(W), czyli dla każdego w\in{0,1}^* pokażę implikację w \in L -> w \in L(W)
+Przez indukcję po długości w.
+
+Baza: w długości 1. Wtedy w=0 i w \in L(W), bo W -> J0J -> 0J -> 0
+
+Krok indukcyjny: weźmy dowolne słowo w \in L długości n+1. Wtedy 
+- albo liczba zer w w wynosi 1. Wtedy W -> J0J ->^*W
+- albo tych zer jest więcej niż 1 czyli jest ich postaci k+2 gdzie k nieparzyste. Wtedy w =1^m01^n01^lv, gdzie v ma k zer, m ,n, l \in N.  Długość v jest na pewno mniejsza od |w|, więc z zał ind. v \in L(W) (czyli istnieje W ->* v)
+
+Teraz W -> J0J0JW ->^* 1^m01^n01^lW ->^*  1^m01^n01^lv = w  
+
+Zad3. Napisz gramatykę, która generuje słowa nad alfabetem {0,1} o równej liczbie zer i jedynek. 
+
+X -> 1X0X | 0X1X | e
+
+S -> 1S0 | 0S1 | e | SS
+
+
+
+
+
+
+
+
+
+
+

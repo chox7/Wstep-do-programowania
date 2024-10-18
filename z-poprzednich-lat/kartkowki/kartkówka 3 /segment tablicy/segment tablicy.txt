@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int tab[], int n)
+{
+    for(int i = 0; i < n; i++)
+        scanf("%d", &tab[i]);
+}
+
+int policzSume(int tab[], int n) //n <= rozmiar tab, bo m <= n
+{
+    int suma = 0;
+    for(int i = 0; i < n; i++)
+        suma += tab[i];
+    return suma;
+}
+
+int main()
+{
+    int A[N], n, m;
+    scanf("%d%d", &n, &m); //n > 0 z polecenia
+    wejscie(A, n);
+
+    int suma = policzSume(A, m);
+    int max = suma;
+    for(int i = m; i < n; i++)
+    {
+        int przyrost = A[i] - A[i - m];
+        suma += przyrost;
+        if(suma > max)
+            max = suma;
+    }
+
+    printf("%d\n", max);
+    return 0; //jest m + 2 * (n - m) operacji
+}

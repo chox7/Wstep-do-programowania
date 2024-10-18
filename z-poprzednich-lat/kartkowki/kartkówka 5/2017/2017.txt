@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+bool tasama(int A[], int B[], int n)
+{
+    int l = 0, p = n - 1;
+    while(l < p)
+    {
+        int s = (l + p) / 2;
+        if(B[s] < A[s])
+            l = s + 1;
+        else
+            p = s;
+    }
+    return A[l] == B[l];
+}
+
+int main()
+{
+    int A[N], B[N], n;
+    scanf("%d", &n);
+    wejscie(A, n);
+    wejscie(B, n);
+    printf("\n%d\n", tasama(A, B, n));
+    return 0;
+}

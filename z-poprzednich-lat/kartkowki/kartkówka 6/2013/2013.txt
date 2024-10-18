@@ -1,0 +1,47 @@
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define n 100
+
+void wejscie(int Tablica[], int N)
+{
+    for(int i = 0; i < N; ++i)
+        scanf("%d", &Tablica[i]);
+}
+
+bool uporzadkowaneModuly(int Tablica[], int N)
+{
+    int l = 0, p = N - 1;
+    bool wynik = true;
+    switch(N)
+    {
+        case 1:
+            break;
+        case 2:
+            wynik = abs(Tablica[0]) <= abs(Tablica[1]);
+            break;
+        default:
+            while(l < p) // szukamy indeks pierwszego nieujemnego elementu tablicy
+            {
+                int s = (l + p) / 2;
+                if(Tablica[s] < 0)
+                    l = s + 1;
+                else
+                    p = s;
+            }
+            if(l) /* Przypadek, kiedy nie prawda, że wszystkie elementy tablicy ujemne.
+                Działa dla l == N - 1 też. Dla l zwykłego wskazuje na pierwszy nieujemny element tablicy */
+                wynik = (Tablica[0] == Tablica[l - 1] && abs(Tablica[l - 1]) <= abs(Tablica[l]));
+            break;
+    }
+    return wynik;
+}
+
+int main()
+{
+    int Tablica[n], N;
+    scanf("%d", &N);
+    wejscie(Tablica, N);
+    printf("\n%d\n", uporzadkowaneModuly(Tablica, N));
+    return 0;
+}

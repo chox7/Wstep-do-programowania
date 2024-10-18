@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int tab[], int n)
+{
+    for(int i = 0; i < n; i++)
+        scanf("%d", &tab[i]);
+}
+
+int Kol(int tab[], int i)
+{
+    return tab[i - 1];
+}
+
+int ileNiebieskich(int a, int b, int c)
+{
+    int ile = 0;
+    if(a == 2)
+        ile++;
+    if(b == 2)
+        ile++;
+    if(c == 2)
+        ile++;
+    return ile;
+}
+
+int ZaniebiebieszczoneTrojki(int tab[], int n)
+{
+    int wynik = 1;
+    if(n > 2)
+    {
+        int pierwszy = Kol(tab, 1), drugi = Kol(tab, 2), aktualny = Kol(tab, 3);
+        int i = 4;
+        int ile = ileNiebieskich(pierwszy, drugi, aktualny);
+        while(i <= n && ile)
+        {
+            if(pierwszy == 2)
+                ile--;
+            pierwszy = drugi;
+            drugi = aktualny;
+            aktualny = Kol(tab, i);
+            if(aktualny == 2)
+                ile++;
+            i++;
+        }
+        if(!ile)
+            wynik--;
+    }
+    return wynik;
+}
+
+int main() // przyjmijmy, ze bialy to 0, czerwony to 1, niebieski to 2
+{
+    int tab[N], n;
+    scanf("%d", &n);
+    wejscie(tab, n);
+    printf("%d", ZaniebiebieszczoneTrojki(tab, n));
+    return 0;
+}

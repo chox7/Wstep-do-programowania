@@ -1,0 +1,74 @@
+https://www.codepile.net/pile/LgllavgK
+
+Kartkówka: Napisz gramatykę która rozpoznaje wszystkie słowa nad alfabetem a,b,c,d które mają dokładnie po 2 litery a, b.
+
+L = {w \in {a, b, c, d}^*  | #(a,w)=2, #(b,w)=2 }
+ 
+P - > QaQaQbQbQ | QaQbQaQbQ | QaQbQbQaQ | QbQaQaQbQ | QbQaQbQaQ | QbQbQaQaQ
+Q - > cQ | dQ | eps  
+
+
+Zad1. Wieże Hanoi z zabronionym przejściem między wieżą 1 i 2 (nie można przekładać krążka z 1 na 2).
+
+
+Z wykładu zwykłe rozwiązanie wieży Hanoi: 
+
+void przenies(int co, int s, int d)
+{printf("Krążek%d z wieży%d na %d",co,s,d);}
+
+void Hanoi(int n, int s, int d)
+// Przenosi n krążków z wieży s na wieżę d
+{
+ if (n>0) {
+   Hanoi(n-1,s,6-s-d); // A
+   przenies(n,s,d);
+   Hanoi(n-1,6-s-d,d); // B
+ }
+}
+void przenies(int co, int s, int d)
+    {printf("Krążek%d z wieży%d na %d",co,s,d);}
+void Hanoi12(int n, int s, int d)
+{
+if(n>0) {
+    if((s==1)&&(d==2)) {
+        Hanoi12(n-1,1,2);
+        przenies(n,1,3);
+        Hanoi12(n-1,2,1);
+        przenies(n,3,2);
+        Hanoi12(n-1,1,2);
+    }
+    else {
+        Hanoi12(n-1,s,6-s-d);
+        przenies(n,s,d);
+        Hanoi12(n-1,6-s-d,d);
+    }
+}
+Zad2. Wieże Hanoi ogólne z informacją z której wieży na którą można przenosić za pomoca boolowskiej tablicy dwuwymiarowej dasie
+// dasie[i][j] - można przenieść krązek z słupa i+1 na j+1
+// problem Hanoi ma rozwiązanie jesli z każdego słupa da sie wyjść i na niego wejść
+// zakładamy że tablica dasie reprezentuje taką sytuację
+
+void HanoiOgólne(int n, int s, int d, int dasie[][]) {
+{  if(n>0) {
+    if(!dasie[s-1][d-1]) {
+        HanoiOgolne(n-1,s,d);
+        przenies(n,s,6-d-s);
+        HanoiOgolne(n-1,d,s);
+        przenies(n,6-d-s,d);
+        HanoiOgolne(n-1,s,d);
+    }
+    else {
+        HanoiOgolne(n-1,s,6-s-d);
+        przenies(n,s,d);
+        HanoiOgolne(n-1,6-s-d,d);
+    }
+}   
+    
+    
+    
+}
+
+
+
+
+

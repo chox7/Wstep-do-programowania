@@ -1,0 +1,4 @@
+/* Prosze napisać procedurę naprzemian(var l1 : lista, l2 : lista), która zmodyfikuje listę l1 tak,
+by zawierała ona na przemian elementy z l1 i l2, zaczynając od elementu z l1. Należy założyć, że obie listy są
+rozłączne , są listami prostymi i mają taką samą liczbę elementów. Na przykład dla list l1 = 1, 3, 5 i l2 =
+2, 4, 6, po wykonaniu procedury ma być l1 = 1, 2, 3, 4, 5, 6. */

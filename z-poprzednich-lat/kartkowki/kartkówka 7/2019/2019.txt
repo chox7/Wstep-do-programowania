@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void wypisz(int t[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        printf("%d ", t[i]);
+    putchar('\n');
+}
+
+void podzialy(int t[], int N, int k, int ruch, int n) // n to ile kamieni zostało, N to rozmiar tablicy
+{
+    if(!n)
+    {
+        if(ruch % 2) // ruch to nieparzysta liczba zatem nie ma kamieni i ruch wykonuje Alicja
+            wypisz(t, ruch - 1); // tyle ruchów zostało wykonanych, czyli rozmiar tablicy
+    }
+    else
+    {
+        int iteracje = n < k ? n : k; // iteracje = min(n, k);
+        for(int i = 1; i <= iteracje; ++i)
+        {
+            t[ruch - 1] = i;
+            podzialy(t, N, k, ruch + 1, n - i);
+        }
+    }
+}
+
+void Kartkowka7(int n, int k)
+{
+    int *t;
+    t = (int*) malloc(n * sizeof(*t));
+    podzialy(t, n, k, 1, n);
+    free(t);
+}
+
+int main()
+{
+    int n, k;
+    scanf("%d%d", &n, &k);
+    Kartkowka7(n, k);
+    return 0;
+}

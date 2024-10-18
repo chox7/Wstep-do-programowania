@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+#define MAX_N 100 // zadanie bylo pisane dla Pascala, a tu tablice sa numerowane od 0, prosze miec to na uwadze
+
+void wejscie(int tab[], int n)
+{
+    for(int i = 0; i < n; i++)
+        scanf("%d", &tab[i]);
+}
+
+void wyjscie(int tab[], int n)
+{
+    for(int i = 0; i < n; i++)
+        printf("%d ", tab[i]);
+}
+
+int main()
+{
+    int A[12], N;
+    scanf("%d", &N);
+    int T[N], M[N];
+    wejscie(T, N);
+    wejscie(M, N);
+
+    int i = 0, nad = 0;
+    for(int j = 0; j < 12; j++)
+    {
+        A[j] = nad;
+        while(M[i] == j + 1 && i < N)
+        {
+            A[j] += T[i];
+            i++;
+        }
+        if(A[j] > 1000)
+        {
+            nad = A[j] - 1000;
+            A[j] = 1000;
+        }
+        else
+            nad = 0;
+    }
+
+    wyjscie(A, 12);
+    printf("\n%d", nad);
+    return 0;
+}

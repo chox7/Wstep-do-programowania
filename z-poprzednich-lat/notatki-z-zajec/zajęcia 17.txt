@@ -1,0 +1,116 @@
+https://www.codepile.net/pile/MgGLrJak
+
+1. Znajdź reprezentację binarną w U2 liczb (na 8 bitach)
+0       00000000
+4       00000100
+-4      11111100
+-1      11111111
+127     01111111     
+-127    10000001
+-128    10000000
+97      01100001
+-97     10011111
+122     01111010
+-122    10000110
+
+2.  Jaką liczbę reprezentują:
+00000101 5
+01010101 85
+10101010 -86
+
+3. Dodawanie -97+97
+
+97      01100001
+-97     10011111
+        00000000   
+        
+4. Liczby wymierne: znajdź reprezentację okresową liczb
+
+1/128   0.0000001(0)
+3/128   0.0000011(0)
+1/7     0.(001)
+3/11    0.(0100010111)
+7/13    0.(100010011101)
+2/7     0.(010)
+3/7     0.(011)
+1/5     0.(0011)
+1/10    0.0(0011)     
+1/11    0.(0001011101)
+1/13    0.(00010011011)
+
+Zad5 Zareprezentować ułamki w notacji zmiennopozycyjnej z wykładu czyli 3 bity na cechę i 4 na mantysę, 
+bez ukrywania bitu 1/2 i z roznormalizowaniem wartości dla najmniejszej cechy 100 (chodzi o to, że przy najmniejszej cesze pozwalamy na mantysy mniejsze co do modułu od 1/2; nie tracimy w ten sposób jednoznaczności zapisu liczby, bo i tak mniejszej cechy nie ma). 
+
+znormalizowana mantysa dla liczby dodatniej ma 1 na bicie 1/2
+
+cecha _ _ _ 
+mantysa _ _ _ _  (pierwszy bit odpowida -1 kolejne bity odpowiadają 1/2 1/4 1/8)
+
+2^c*m 
+
+trzy bity cechy w U2  000 to zero 111=-4+2+1=-1
+
+
+5/8     000 0101
+5/16    111 0101  5/16=5/8*2^{-1}
+5/32    110 0101
+5/64    101 0101
+5/128   100 0101
+5/256   100 0011
+5/512   100 0001 
+5/1024  100 0001
+5/2048  100 0000
+
+
+2/7     111 0101    0.(010)
+3/7     111 0111    0.(011)  2^{-1} 0.110110....            
+1/5     110 0110    0.(0011)
+1/10    101 0110    0.0(0011)     
+1/11    101 0110    0.(0001011101)
+1/13    101 0101    0.(00010011011)
+
+
+Zad6 Dodaj 1/11 i 1/13 w naszej reprezentacji.
+
+a) znajdź postac okresową 1/11 1/13
+b) oblicz 1/11 i 1/13 w naszej reprezentacji
+
+1/11    101 0110    0.(0001011101)
+1/13    101 0101    0.(00010011011)
+
+c) dodaj do siebie - łatwe gdy cechy są równe
+
+101 0110
+101 0101
+--------
+101 0(1)011
+
+trzeba znormalizować wynik 
+
+cecha 110
+mantysa 0101|1 
+Wynik: 110 0101
+
+
+Zad7 Dodaj 5/8 i 1/13 w naszej reprezentacji.
+
+1/13    101 0101 
+5/8     000 0101
+
+trzeba wyrównać cechy (mniejszą do większej)
+
+000 0101
+000 0000|1
+----------
+000 0110
+
+
+
+
+
+
+
+
+
+
+

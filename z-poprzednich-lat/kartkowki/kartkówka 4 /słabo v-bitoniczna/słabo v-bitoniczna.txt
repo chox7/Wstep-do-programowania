@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+int main()
+{
+    int n, A[N];
+    scanf("%d", &n);
+    wejscie(A, n);
+
+    int i = 0, j = 0;
+    while(i < n - 1 && A[i] >= A[i + 1])
+    {
+        i++;
+        if(A[i - 1] > A[i])
+            j = i;
+    } // i == n - 1 albo A[i] < A[i + 1]
+    while(i < n - 1 && A[i] <= A[i + 1])
+        i++;
+
+    if(i != n - 1)
+        printf("\nNIE\n");
+    else
+        printf("\n%d\n", j);
+    return 0;
+}

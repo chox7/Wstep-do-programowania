@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 100
+
+typedef struct
+{
+    int x;
+} Cyfra;
+
+typedef struct
+{
+    int N1;
+    Cyfra array[N];
+} Liczba1;
+
+typedef struct
+{
+    int N2;
+    Cyfra array[N];
+} Liczba2;
+
+void przeksztalc(Liczba1 a, Liczba2* b, bool *ok)
+{
+    *ok = true;
+    if(a.N1 > b->N2)
+        for(int i = a.N1 - 2; i >= b->N2 - 1 && ok; --i)
+            *ok = a.array[i].x == a.array[i + 1].x;
+    if(*ok)
+    {
+        int i = 0, n = b->N2 < a.N1 ? b->N2 : a.N1;
+        for(; i < n; ++i)
+            b->array[i] = a.array[i];
+        if(a.N1 < b->N2)
+            for(; i < b->N2; ++i)
+                b->array[i] = b->array[a.N1 - 1];
+    }
+}
+
+int main()
+{
+    Liczba1 a;
+    Liczba2 b;
+    bool ok;
+    scanf("%d%d", &a.N1, &b.N2);
+    for(int i = a.N1 - 1; i >= 0; --i)
+        scanf("%d", &a.array[i].x);
+    przeksztalc(a, &b, &ok);
+    printf("czy ok %d\n", ok);
+    for(int i = (b.N2) - 1; i >= 0; --i)
+        printf("%d ", b.array[i].x);
+    return 0;
+}

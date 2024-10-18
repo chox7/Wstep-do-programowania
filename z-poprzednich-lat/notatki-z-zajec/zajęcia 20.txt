@@ -1,0 +1,97 @@
+https://www.codepile.net/pile/JlQZ6Rgx
+
+Zad1 Uporządkuj listę  tak, aby wszystkie ujemne liczby poprzedzały zerowe, a te z kolei dodatnie.
+
+struct lista {
+   int val;
+   struct lista *next;
+};
+  
+typedef struct lista Tlista;
+
+int main() {
+Tlista* l;
+
+int A[] = {3, -2, 0, 4, -4, 6, 0}
+l = utworz(A, 6); // 3, -2, 0, 4, -4, 6, 0
+
+uporzadkuj(&l);
+//uporządkuj
+
+wypisz_listę(l); // -2,-4, 0, 0, 3, 4, 6
+
+//wersja b 
+Tlista ** wsk_l;
+*wsk_l = l;//wsk_l = &l
+
+uporzadkuj(wsk_l);
+
+wypisz_listę(*wsk_l)
+}
+
+void uporzadkuj(Tlista** wsk_l) { 
+    Tlista* l = *wsk_l;
+    Tlista* p_ujemnych, k_ujemnych, p_zer, k_zer, p_dodatnich, k_dodatnich;
+    p_ujemnych = malloc (sizeof(lista));
+    p_zer = malloc (sizeof(lista));
+    p_dodatnich = malloc (sizeof(lista));
+    k_ujemnych = p_ujemnych;
+    k_zer = p_zer;
+    k_dodatnich = p_dodatnich;
+    k_ujemnych -> next = NULL;
+    k_zer -> next = NULL;
+    k_dodatnich -> next = NULL;
+    while (l != NULL){
+        if ( l -> val > 0)
+        {
+            k_dodatnich -> next = l;
+            k_dodatnich = k_dodatnich -> next;
+        }
+        else if (l -> val < 0)
+        {
+            k_ujemnych -> next = l;
+            k_ujemnych = k_ujemnych -> next;
+        }
+        else // l -> val == 0
+        {
+            k_zer -> next = l;
+            k_zer = k_zer -> next; 
+        }
+        l = l -> next;
+    }
+    k_dodatnich -> next = NULL;
+    k_zer -> next = p_dodatnich -> next;
+    k_ujemnych -> next = p_zer -> next;
+    *wsk_l = p_ujemnych -> next;    
+    free(p_zer);
+    free(p_dodatnich);
+    free(p_ujemnych);
+}
+
+Zad2 Napisz procedure Flawiusz, która dla danego k > 0 i niepustej cyklicznej listy l, cyklicznie usuwa co k-ty element listy l, aż pozostanie w niej tylko jeden element. Liczenie rozpoczynamy od elementu wskazywanego przez l. 
+
+
+void Flawiusz (Tlista ** wsk_l, int k){
+    Tlista* l = *wsk_l;
+    Tlista* pom = l;
+    while(pom -> next != l)
+    {
+        pom = pom -> next;
+    }
+    while (l -> next != l)
+    {
+        for (int i = 0; i < k - 1; i++)
+        {
+            l = l -> next;
+            pom = pom -> next;
+        }
+        pom -> next = l-> next;
+        free(l);
+        l = pom -> next;
+    }
+    *wsk_l = l;
+}
+
+
+
+

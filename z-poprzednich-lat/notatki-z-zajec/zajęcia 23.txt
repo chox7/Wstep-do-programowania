@@ -1,0 +1,113 @@
+https://www.codepile.net/pile/megyB875
+
+Zad3.    Napisz funkcję która dla danej tablicy A liczb całkowitych długości N obliczy maksymalne k, takie że k=j-i, 
+- 0 ≤ i ≤ j ≤ N-1 oraz
+- A[j] ≥ A[i]. 
+
+/* Stos
+struct lista {
+   struct lista *next;
+   int val;
+};
+  
+typedef struct lista Tlista;
+
+typedef Tlista* stos;
+
+bool Empty(s)       czy stos s  jest pusty?
+void Init(&s)       utwórz pusty stos s
+void Push(&s,x)     włóż na stos s wartość x
+int Pop(&s)         zdejmij ze stosu s element i przypisz go x  , nie zakładam że stos niepusty, muszę to sprawdzic wcześniej
+int Top(s)          podaj wartość x na szczycie stosu s, podobnie jak w Pop
+bool Full(s)        czy stos s jest pełny?
+void Clear(&s)      wyczyść stos s
+
+
+*/
+
+
+
+int fun (int A[], int n){
+    stos s;
+    //tworzenie stosu
+    Init(&s);
+    Push(&s, n-1);
+    int ind = n - 2;
+    while (ind >= 0){
+        if(A[ind] > A[Top(s)])
+        {
+            Push(&s, ind);
+        }
+        ind --;
+    }
+    int max = 0;
+    int current = 0;
+    int i = 0; 
+    while(!Empty(s) && i < n)
+    {
+        if(A[i] > A[Top(s)])
+        {
+            i++;
+        }
+        else
+        {//A[i] <= A[Top(s)]
+            current = Top(s) - i;
+            Pop(&s);
+        }
+        if (current > max)
+        {
+            max = current;
+        }
+    }
+    Clear(&s); //na wszelki wypadek ;)
+    return max;
+}
+
+Zad.  Na brzegu rzeki Limpopo znajduje się grupa 6 osób: 3 ludożerców i 3 misjonarzy. Mają jedną łódkę 2-osobową, którą zamierzają się przeprawić na drugą stronę. W łódce musi być sternik (może być sam). Stosowne uprawnienia sternika ma tylko jeden z ludożerców i wszyscy misjonarze. Jeśli zdarzy się kiedykolwiek, choćby na moment, sytuacja, w której na którymkolwiek brzegu będzie więcej ludożerców niż misjonarzy, to ci pierwsi zjedzą tych drugich. Zaplanuj przeprawę przez rzekę tak, aby nie doszło do konsumpcji. 
+
+                                               misjonarze, ludozerca sternik, ludozerca, brzeg na ktorym jest łodka (1 - prawy)
+Stan - opis liczby ludzi i łódki na prawym brzegu rzeki . stan pocz: 3, 1, 2, 1, stan końcowy: 0,0,0,0
+bool PoprawneStany[4][2][3][2];
+int Ruchy[12][4] ={ {-2,0,0,-1}, {2,0,0,1}, {-1,-1,0,-1}, {1,1,0,1},
+		            {-1,0,-1,-1}, {1,0,1,1}, {0,-1,-1,-1}, {0,1,1,1},
+		            {-1,0,0,-1}, {1,0,0,1}, {0,-1,0,-1}, {0,1,0,1} };
+		            
+/* Kolejka
+
+struct listaK {Tlista *pocz,*kon;}
+typedef struct listaK Tkolejkal;
+
+bool Pusta(k)         czy kolejka k jest pusta?
+void TwórzPustą(&k)   utwórz pustą kolejkę k
+void Wstaw(&k,x)      włóż do kolejki k wartość x
+void Pobierz(&k, &x)  usuń z kolejki k element i przypisz go x, musze sparwdzić zawczasu, ze kolejka niepusta
+int Pierwszy(k)       podaj wartość x na początku kolejki k, podonie jak w Pobierze kolejka musi byc niepusta
+bool Pełna(k)         czy kolejka k jest pełna?
+void Usuń(&k)         wyczyść kolejkę k
+
+*/ 
+
+
+bool CzyMozliwe (){
+    kolejka k; //kolejka tablic 4 elementowych
+    int Stan[4]={3,1,2,1};
+    
+    
+    
+    
+    
+}
+		            
+		            
+		            
+
+
+
+
+
+
+
+
+
+
+

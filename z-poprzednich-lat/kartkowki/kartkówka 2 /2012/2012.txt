@@ -1,0 +1,12 @@
+#include <stdio.h> //identyczna do 2011
+
+int main() {
+    int n, ile_trojek=0;
+    scanf("%d", &n);
+    while (n>2) {
+        n/=3;
+        ile_trojek+=n;
+    }
+	printf ("%d", ile_trojek);
+	return 0;
+}

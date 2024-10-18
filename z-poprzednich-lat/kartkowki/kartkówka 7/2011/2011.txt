@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 8
+
+void wejscie(int t[], int n)
+{
+    for(int i = 0; i <= n; ++i)
+        scanf("%d", &t[i]);
+}
+
+bool mniejsze(int A[], int B[], int n)
+{
+    bool wynik;
+    if(A[n] < B[n])
+        wynik = false;
+    else
+    {
+        if(A[n] > B[n])
+            wynik = true;
+        else
+        {
+            int i = 0;
+            while(i < n && A[i] == B[i])
+                i++;
+            if(i == n)
+                wynik = false;
+            else
+                wynik = A[i] < B[i];
+        }
+    }
+}
+
+int main()
+{
+    int A[N], B[N], n;
+    scanf("%d", &n);
+    wejscie(A, n);
+    wejscie(A, n);
+    printf("%d", mniejsze(A, B, n));
+    return 0;
+}

@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_n 1000        //troche szersze rozwiazanie problemu i troche nie pasuje do danych wejsciowych
+
+int main() //0 to czerwony, 1 to bialy
+{
+    int flaga[MAX_n], n;
+    scanf("%d", &n);
+    wejscie(flaga, n);
+    int stan=0; //niech stan to stan programu. Jesli stan jest rowny zero to czerwony dodajemy po lewej, jesli stan jest rozny od zera to dodajemy do prawej
+    int l=0, s=0, p=n-1;
+    while(s<p)
+    {
+        if (flaga[s]==1) s++;
+        else //flaga[s] jest czerwona
+        {
+            if (stan==0) //dajemy do lewej
+            {
+                Z(flaga, l, s);
+                s++;
+                l++;
+                stan++;
+            }
+        else
+        {
+            Z(flaga, s, p);
+            p--;
+            stan--;
+        }
+        }
+    }
+    wyjscie(flaga, n);
+    return 0;
+}
+void wejscie(int flaga[], int n)
+{
+    int i=0;
+    while(i<n)
+    {
+        scanf("%d", &flaga[i]);
+        i++;
+    }
+}
+
+void Z(int flaga[], int l, int p)
+{
+    int temp=flaga[p];
+    flaga[p]=flaga[l];
+    flaga[l]=temp;
+}
+
+void wyjscie(int flaga[], int n)
+{
+    int i=0;
+    while(i<n)
+    {
+        printf("%d", flaga[i]);
+        i++;
+    }
+}

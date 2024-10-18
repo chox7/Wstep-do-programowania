@@ -1,0 +1,99 @@
+https://www.codepile.net/pile/XlD8jDla
+
+Zad2. Tej samej długości tablice A i B długości n są posortowane rosnąco i zawierają rozłączne wartości całkowite. Ze względu na to, że łączna liczba elementów jest parzysta, możemy dwa środkowe co do wartości elementy spośród nich uznać za mediany: małą m i dużą M. Wyznacz je. (chodzi o element n-ty i n+1-wszy co do wartości w obu tablicach łącznie). 
+
+
+A = 1 2 4 8 9
+B = 0 3 5 6 7 
+
+Dla zbioru {11, 22, 33} 22 jest medianą
+
+A \cup B = {0, 1, 2 ,3, 4, 5, 6, 7, 8, 9}
+
+m(A \cup B) = 4
+M(A \cup B) = 5
+
+
+A = 1 2 3 4 5
+B = 0 6 7 8 9 
+
+
+int i = 0;
+int j = n - 1;
+
+while (i < j - 1) {
+    int s = (i + j) / 2;
+    if (A[s] < B[n-s-1]) {
+        i = s;
+    } else {
+        j = s;
+    }
+}
+\\ zostały A[i] < A[j], B[n-i-1] > B[n-j-1]
+
+int a, b;
+a = max(A[i], B[n-j-1]);
+b = min (A[j], B[n-i-1]);
+
+m = min (a, b);
+M = max (a, b);
+
+
+
+https://www.codepile.net/pile/Rz0qKlAj
+
+Zad. Napisz rekurencyjnie wyszukiwanie minimum w nie wiadomo czy posortowanej tablicy A liczb całokowitych długości n, n>0
+
+
+a)
+
+int minimum(int A[], int ind) {
+    int i;
+    if (ind==0) return(A[0]);
+    else {
+        i = minimum(A, ind-1);
+        if(i<A[ind]]) {
+            return i;}
+        else {
+            return(A[ind]);}
+    }
+    
+
+int main() {
+int A[n];
+
+wczytaj(A,n);
+
+int minimum_z_tablicy = minimum(A,n-1);
+int m2 = minimum(A, n/2);
+    
+printf("Minimum z tablicy to %d", minimum_z_tablicy);    
+}
+
+b) całą tablicę dzielę na 2 części i w każdej z nich znajduję minimum....
+
+int min(int A[], int l, int p) {// l<=p 
+    if (p - l <= 1){
+        if (A[l] > A[p]){
+            return A[p];
+        }
+        else{
+            return A[l];
+        }
+    }
+    else{
+        int s = ( l + p ) / 2 ;
+        int r1 = min(A, l, s);
+        int r2 = min(A, s+1, p));
+        if (r1 > r2) { return r2;}
+        else {return r1;}
+    }
+}
+int main() {
+    
+int m= min(A, 0, n-1);
+
+}    
+    
+
+

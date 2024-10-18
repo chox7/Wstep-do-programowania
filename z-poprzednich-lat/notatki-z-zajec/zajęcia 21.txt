@@ -1,0 +1,116 @@
+https://www.codepile.net/pile/VPNRXyPR
+
+Kartkówka: Napisz funkcję
+
+void UsuńŚrednie(Tlista *l),
+
+która z listy l usunie wszystkie elementy będące średnią arytmetyczną swoich sąsiadów. 
+
+
+void UsuńŚrednie(Tlista *l) {
+    Tlista *nast, *act, *pop;
+    if (l != NULL && l->next != NULL) {
+        pop = l; // wskaźnik na poprzedni element w nowej liscie
+        int pop_wart = pop->val; // wartośc poprzedniego elementu w początkowej liście
+        act = pop->next; // wskaźnik aktualnie sprawdzanego elementu
+        while (act->next != NULL) { // pętla się wykonuje dopóki aktualnie sprawdzany element nie jest ostatnim w liście
+            nast = act->next; // wskaźnik na kolejny element
+            if (((pop_wart + nast->val) % 2 == 0) && (act->val == (pop_wart + nast->val) / 2)){
+                pop_wart = act->val;
+                pop->next = act->next;
+                free(act);
+            } else {
+                pop = pop->next;
+                pop_wart = pop->val;
+            }
+            act = nast;
+        }
+    }
+}
+
+void UsuńŚrednie(Tlista *l)
+{
+    if (l != NULL && l->next != NULL && l->next->next != NULL) {
+    		if ((l->val + l->next->next->val) % 2 == 0 && l->next->val == (l->val + l->next->next->val) / 2) {
+    			UsuńŚrednie(l->next);
+    			Tlista*  pom = l->next->next;
+    			free(l->next);
+    			l->next = pom;
+    		}
+    		else 
+    		    UsuńŚrednie(l->next);
+    }
+}
+
+
+
+
+Zad. 1 Dane są dwie listy proste (kończące się NULL). Napisz funkcję stwierdzającą czy te listy mają jakiś wspólny element (nie wartość typu integer, a element typu Tlista).
+
+
+bool czy_wspolny(Tlista *l1, Tlista *l2){
+    if(l1 == NULL || l2 == NULL){
+        return false; 
+    }
+    else{
+        while(l1->next != NULL){
+            l1 = l1->next;
+        }
+        while(l2->next != NULL){
+            l2 = l2->next;
+        }
+        return (l1 == l2);
+    }
+}
+
+
+Zad2. Dane są dwie listy proste (kończące się NULL) i takie że maja one element wspólny (funkcja czy_wspólny z poprzedniego zadania dałaby wynik true). Napisz funkcję odnajdującą pierwszy element wspólny tych list.
+ 
+Tlista* pierwszy_wspolny (Tlista* l1, Tlista* l2)
+//l1 i l2 != NULL
+    Tlista* pom1= l1, pom2 =l2;
+    int dlugosc_l1 = 1, dlugosc_l2 = 1;
+    while(l1 != NULL)
+    {
+        l1 = l1 -> next;
+        dlugosc_l1 ++;
+    }
+    while(l2 != NULL)
+    {
+        l2 = l2 -> next;
+        dlugosc_l2++;
+    }
+    int przesuniecie = dlugosc_l1 - dlugosc_l2;;
+    if (dlugosc_l2 < dlugosc_l1)
+    {
+
+        for (int  i = 0; i < przesuniecie; i++)
+        {
+            pom1 = pom1 -> next;
+        
+        }
+    }
+    else
+    {
+        for (int  i = 0; i < przesuniecie; i++)
+        {
+            pom2 = pom2->next;
+        }
+    }
+    while (pom1 != pom2)
+    {
+        pom1 = pom1 -> next;
+        pom2 = pom2 -> next;
+    }
+    return pom1;
+}
+
+
+Zad. Napisz funkcję która sprawdzi czy dana l jest listą prostą czy też listą z cyklem.
+
+
+
+
+
+
+

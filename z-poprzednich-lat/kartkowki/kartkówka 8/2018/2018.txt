@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+#define N 100
+
+void wymagania(int a[], int n, int *c, int *m)
+{
+    int nowyN = n - 1;
+    while(nowyN >= 0 && !a[nowyN])
+        nowyN--;
+    nowyN++; // zera odrzucone
+    int liczba0 = 0;
+    while(liczba0 < n && !a[liczba0])
+        liczba0++;
+    int k = nowyN; // cecha, ale nie liczba bitów
+    *c = 1;
+    while(k > 0) // trzeba policzyć ile bitów na taką cechę trzeba
+    {
+        k /= 2;
+        (*c)++;
+    }
+    *m = nowyN - liczba0;
+}
+
+int main()
+{
+    int a[N], n, c, m;
+    scanf("%d", &n);
+    for(int i = n - 1; i >= 0; --i)
+        scanf("%d", &a[i]);
+    wymagania(a, n, &c, &m);
+    printf("\n%d %d\n", c, m);
+    return 0;
+}

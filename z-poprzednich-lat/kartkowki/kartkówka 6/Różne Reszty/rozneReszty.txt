@@ -1,0 +1,48 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+bool RozneReszty(int A[], int n)
+{
+    bool wynik = true;
+    if(n > 2)
+    {
+        int pierwszy = A[0]%3, drugi = A[1]%3;
+        wynik = pierwszy != drugi;
+        if(wynik)
+        {
+            int trzeci = A[2]%3;
+            wynik = (trzeci != pierwszy && trzeci != drugi);
+            int i = 3;
+            while(i < n && wynik)
+            {
+                int aktualny = A[i]%3;
+                wynik = aktualny == pierwszy;
+                if(wynik)
+                {
+                    pierwszy = drugi;
+                    drugi = trzeci;
+                    trzeci = aktualny;
+                }
+                i++;
+            }
+        }
+    }
+    return wynik;
+}
+
+int main()
+{
+    int n, A[N];
+    scanf("%d", &n);
+    wejscie(A, n);
+    printf("\n%d\n", RozneReszty(A, n));
+    return 0;
+}

@@ -1,0 +1,242 @@
+https://www.codepile.net/pile/XVKjvnrm
+
+struct lista {
+   int val;
+   struct lista *next;
+};
+  
+typedef struct lista Tlista;
+
+Zad Napisz funkcję która sprawdzi czy dana l typu lista jest listą prostą czy też listą z cyklem.
+
+typedef struct Node {
+    int War;
+    struct Node *next;
+} Node;
+
+bool Czy_z_cyklem() {
+
+    if(head == NULL) {
+        return false;
+    }
+    Node *wsk = head;
+    int i = 0;
+    int rozmiar = 1;
+    //tablica wskaznikow z węzłów listy
+    //wskaźniki można zrzutować na typ int
+
+    int *tablica = malloc(rozmiar * sizeof(int));
+    tablica[0] = head;
+
+    while(wsk->next != NULL) {
+
+            for(int j=0; j<rozmiar; j++){
+                if(tablica[j] == wsk->next) {
+                    return true;
+                }
+            }
+
+            i++;
+            rozmiar++;
+            tablica = realloc(tablica, rozmiar * sizeof(int));
+            tablica[i] = wsk->next;
+
+            wsk = wsk->next;
+ }
+    return false;
+}
+
+
+bool CzyProsta(Tlista *l)
+{
+    /*
+    wynikiem jest true jeślilisat jest prosta 
+    pomysł:
+    allokuje atrape
+    przechodze po liscie z pomocniczymi i odwracam adresy
+    jak natrafie na null to prosta
+    jak natrafie na atrape to z cyklem
+    */
+
+    if (l == NULL)
+    { //lista pusta
+        return true;
+    }
+    else
+    {
+        // pop l kol 
+        Tlista *atrapa, *pop, *kol;
+        atrapa = malloc(sizeof(Tlista));
+        atrapa->next = l;
+        pop = atrapa;
+        kol = l->next;
+        if (kol == l)
+        { //jeśli lista jest jednoelementowa cykliczna
+            free(atrapa);
+            return false;
+        }
+        else
+        {
+            while (kol != NULL && kol != atrapa)
+            {//przechodzę listę i ją odwracam
+                l->next = pop;
+                pop = l;
+                l = kol;
+                kol = kol->next;
+            }
+            if (kol == atrapa)
+            { //jeśli tym sposobem wrócę do atrapy to znaczy że lista jest z cyklem
+                free(atrapa);
+                return false;
+                //brakuje odwrócenia listy raz jeszcze
+            }
+            else
+            { //kol == NULL
+             // jeśli tym sposobem dojdę do NULL to znaczy, że lista jest prosta
+                free(atrapa);
+                return true; 
+                //brakuje odwrócenia listy raz jeszcze
+            }
+        }
+    }
+}
+
+
+Zad. Napisz funkcję sprawdzającą czy zadane wyrażenie nawiasowe składające się z nawiasów okrągłych i kwadratowych jest poprawne. Zakładamy, że dana jest funkcja DajZnak(), która przyjmuje następujące wartości: -1 dla (, 1 dla ), -2 dla [, 2 dla ] i 0 na oznaczenie końca wyrażenia nawiasowego.
+
+
+()[][()()]
+
+Nawias otwierający dajemy na stos liczb całkowitych, nawias zamykający zdejmuje pasujący nawias ze stosu - jak nie pasuje to błąd
+
+/*
+Empty(s)       czy stos s  jest pusty?
+Init(&s)       utwórz pusty stos s
+Push(&s,x)     włóż na stos s wartość x
+int Pop(&s)     zdejmij ze stosu s element i przypisz go x
+int Top(s)     podaj wartość x na szczycie stosu s
+Full(s)        czy stos s jest pełny?
+Clear(&s)      wyczyść stos s
+*/
+
+
+
+Używam stosu zaimplentowanego na liście i funkcji z wykładu
+
+struct lista {
+   struct lista *next;
+   int val;
+};
+  
+typedef struct lista Tlista;
+
+typedef Tlista* stos;
+
+bool Czy_poprawne() {
+    
+    int x;
+    stos s;
+    int znak;
+    Init(&s);
+    
+    while(  (znak = DajZnak() )!= 0) { 
+    
+    if(znak < 0) {
+        Push(&s,znak) ;
+    }
+    else if  ( !Empty(s)  ){
+        if( -znak != Top(s) ) {
+            Clear(&s); 
+            return false;
+        }
+        else {
+            Pop(&s);
+        }
+        
+    
+    }
+    else 
+        Clear(&s); 
+        return false;
+
+}
+    if( Empty(s) ){
+        Clear(&s);
+        return true;
+    }
+    else {
+        Clear(&s);
+        return false;
+    }
+    
+    
+}   
+    
+    
+ Zad 2   Napisz funkcję sprawdzającą czy zadane wyrażenie nawiasowe składające się z nawiasów okrągłych i kwadratowych jest poprawne. Tym razem jednak zabraniamy nawiasom kwadratowym występować wewnątrz okrągłych.  
+    
+    
+    
+ bool Czy_poprawne() {
+    
+    int x;
+    stos s;
+    int znak;
+    Init(&s);
+    
+    while(  (znak = DajZnak() )!= 0) { 
+    
+    if(znak < 0) {
+        
+        if(znak == -2) {
+            if((! Empty(&s))&&(Top(s) ==-1)) {
+                Clear(&s);
+                return false;
+            }
+            else {
+                Push(&s, znak);
+            }
+        }
+        else {
+            Push(&s, znak);
+        }
+    }
+    else if  ( !Empty(s)  ){
+        if( -znak != Top(s) ) {
+            Clear(&s); 
+            return false;
+        }
+        else {
+            Pop(&s);
+        }
+        
+    
+    }
+    else 
+        Clear(&s); 
+        return false;
+
+}
+    if( Empty(s) ){
+        Clear(&s);
+        return true;
+    }
+    else {
+        Clear(&s);
+        return false;
+    }
+    
+    
+}     
+    
+Zad3.    Napisz funkcję która dla danej tablicy A liczb całkowitych długości N obliczy maksymalne k, takie że k=j-i, 
+- 0 ≤ i ≤ j ≤ N-1 oraz
+- A[j] ≥ A[i]. 
+
+
+
+
+
+    
+    
+

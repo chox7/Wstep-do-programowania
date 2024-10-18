@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main() {
+    int n, wynik=0;
+    scanf("%d", &n);
+    while (n>4) {
+        n/=5;
+        wynik+=n;
+    }
+	printf ("%d", wynik);
+	return 0;
+}

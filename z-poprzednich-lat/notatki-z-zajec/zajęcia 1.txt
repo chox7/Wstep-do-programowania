@@ -1,0 +1,44 @@
+https://www.codepile.net/pile/G0rLyW5K
+
+
+Dziś - o fladze polskiej. Danych jest n urn z żetonami. Kazda urna zawiera dokładnie 1 żeton biały lub czerwony. Robot potrafi dwie rzeczy: określić kolor żetonu (otwiera przy tym urnę, a później zamyka, co jest skomplikowane, więc chcemy zoptymalizować liczbę tych operacji) oraz zamienia urny miejscami. Te dwie funkcje, to Kol(i) podająca wartość czerwony lub biały oraz Z(i,j), zamieniająca urnę i-tą z j-tą. Uwaga: robot może się popsuć, jeśli i=j. Napisz program dla robota, tak żeby najpierw znalazły się urny czerwone, a potem biały
+
+Niezmiennik: cccc??????bbb
+                 i    jd
+                 
+                 
+i=1;
+j=n;
+
+while (i < j)
+//Dla każdego k 1<=k<i Kol(k) = czerwony
+//Dla każdego k j<k<=n Kol(k) = biały
+//1 <= i <= j <= n 
+{
+    if (Kol(i) == biały)
+    {
+        while ((i<j) && (Kol(j) == biały)) 
+        //1 <= i <= j <= n 
+        //Dla każdego k j<k<=n Kol(k) = biały
+        //Dla każdego k 1<=k<i Kol(k) = czerwony
+        //Kol(i) == biały)
+        {
+            j = j-1;
+        }
+        if (i<j)
+        {
+            Z(i, j);
+            i = i+1;
+            j = j-1;
+        }
+    }
+    else
+    {
+        i = i+1;
+    }
+}
+
+
+Napisać kolejną wersję:
+Niezmiennik: cccccbbbbbbb?????
+                  i      j 

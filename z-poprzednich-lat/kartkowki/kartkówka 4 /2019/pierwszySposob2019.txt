@@ -1,0 +1,63 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int tab[], int n)
+{
+    for(int i = n - 1; i >= 0; i--)
+        scanf("%d", &tab[i]);
+}
+
+void wyjscie(int tab[], int n)
+{
+    for(int i = n - 1; i >= 0; i--)
+        printf("%d", tab[i]);
+}
+
+int rowne(int b[], int c[], int n, int d[], int m)
+{
+    int wynik = 1, nad = 0, i = 0;
+    while(i < n && wynik)
+    {
+        int x = b[i] + c[i] + nad;
+        if(x >= 10)
+        {
+            x = 0;
+            nad = 1;
+        }
+        else
+            nad = 0;
+        if(d[i] != x)
+            wynik = 0;
+        i++;
+    }
+    if(wynik)
+    {
+        if(m == n)
+        {
+            if(nad)
+                wynik = 0;
+        }
+        else
+        {
+            if(d[i] == nad)
+                for(int j = j + 1; j < m && wynik; j++)//sprawdzamy czy dalej jest wyzerowana tablica
+                    if(d[j])
+                        wynik = 0;
+            else
+                wynik = 0;
+        }
+    }
+    return wynik;
+}
+
+int main()
+{
+    int a[N], b[N], c[N], n, m;
+    scanf("%d%d", &n, &m);
+    wejscie(a, n);
+    wejscie(b, n);
+    wejscie(c, m);
+    printf("%d\n", rowne(a, b, n, c, m));
+    return 0;
+}

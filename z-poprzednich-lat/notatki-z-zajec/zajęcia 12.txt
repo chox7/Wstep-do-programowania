@@ -1,0 +1,122 @@
+https://www.codepile.net/pile/bGXqNAJL
+
+//Szukamy elementu x w tablicy A[0..n-1] uporządkowanej niemalejąco
+
+l=0; 
+p=n-1; 
+while (l<p) { 
+// 0<=l<=p<=n-1
+// Istnieje 1<=k<=n A[k]=x  <=> Istnieje l<=k<=p A[k]=x) 
+    s=(l+p)/2; 
+    if (x>A[s]) l=s+1;       //Mamy l<p  <=>  l <= (l+p)/2 <p}
+    else p=s;
+}
+jest=(A[l]==x);
+
+Pytania:
+0. Co gdyby p=s-1? Możliwe że nie ominiemy x
+1. Czy można zastąpić l przez p (TAK) lub s (NIE) w linii 12 ?
+2. Co gdyby przypisania były l=s;  p=s; ? Można się zapętlić gdy p=l+1 i x>A[s]
+3. Co gdyby p=s+1 ? Można się zapętlić gdy p=l+1 i x<=A[s]
+4. Co gdyby w while l<=p ? Zapętlamy się na l=p i x<=A[s] 
+5. Niezmiennik dla tablicy rosnącej:
+   A rosnąca
+   0<=l<=p<=n-1
+   forall k 0<=k<l A[k]<x 
+   forall k p<k<=N-1 A[k]>x
+6. Niezmiennik dla tablicy niemalejącej    
+   A niemalejąca
+   0<=l<=p<=n-1
+   forall k 0<=k<l A[k]<x 
+   forall k p<=k<=N-1 A[k]>=x lub p=N-1 
+   
+7. Wersja wysz. binarnego z wyjściem wcześniejszym z pętli jeśli A[s]=x, czyli while (not jest ......_)   
+l=0;
+p=N-1;
+jest=false;
+while ((l<=p) && (jest == false)){ 
+// 0<=l-1<=p<=n-1
+// Istnieje 1<=k<=n A[k]=x  <=> Istnieje l<=k<=p A[k]=x) lub jest  
+    s=(l+p)/2; 
+    jest=(A[s]==x);
+    if (x>A[s]) l=s+1;       //Mamy l<p  <=>  l <= (l+p)/2 <p}
+    else p=s-1;
+}
+
+x=3
+3 4 5
+l s p
+
+
+8. Tablica niemalejąca - chcę znaleźć pierwsze wystąpienie x.
+Nasz pierwszy program = niezmiennik z 6.
+
+9. Tablica niemalejąca - chcę znaleźć ostanie wystąpienie x " Lustrzane odbicie " oprzedniego programu
+
+l=0; 
+p=n-1; 
+while (l<p) { 
+// 0<=l<=p<=n-1
+// Istnieje 1<=k<=n A[k]=x  <=> Istnieje l<=k<=p A[k]=x) 
+    s=(l+p+1)/2 ; 
+    if (x<A[s]) p = s-1;       //Mamy l<p  <=>  l < (l+p+1)/2 <=p}
+    else l = s;
+}
+
+
+10. Tablica niemalejąca - chcę znaleźć liczbę wystąpień x w tablicy.
+
+z dokładnościa do tego czy x  wtablicy: 
+trzeba znaleźć logarytmicznie pierwsze i ostatnie wystąpienie x i odjąć te indeksy od siebie.
+
+Zad1 Napisz program, który obliczy sufit z pierwiastka z n, n>0 (oczywiście bez operacji pierwiastek).
+
+
+sufit z pierwiastka n = k
+
+k*k >= n >(k-1)*(k-1)
+
+
+int sufit_z_pierwiastka(int n){
+    int s,l,p;
+    l=1;
+    p=n;
+    while(l<p){
+        s=(l+p)/2;
+        if(s*s<n)
+            l=s+1;
+        else
+            p=s;
+    }
+    return l;
+}
+
+
+Zad2. Znajdź indeks maksimum w ciągu bitonicznym, czyli takim, że istnieje 0<=k<=n-1 takie że dla każdego 0 <j<=k zachodzi a[j-1]<a[j] oraz dla każdego k<j<=n-1 zachodzi a[j-1]>a[j]. Uwaga: ciąg bitoniczny może mieć tylko stok rosnący lub malejący.
+
+
+
+1 2 4 6 5 3
+      ind = 3 
+
+l p 
+s 
+a[s] a[s+1] 
+
+l=0; 
+p=n-1; 
+while (l<p) { 
+    s=(l+p)/2; 
+    if (A[s] < A[s+1]) l=s+1; 
+    else p=s;
+}
+
+Szukam pierwszego elementu dla którego sąsiad po prawej jest mniejszy
+
+
+
+
+
+
+   
+

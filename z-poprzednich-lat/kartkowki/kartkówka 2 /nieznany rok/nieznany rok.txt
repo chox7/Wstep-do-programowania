@@ -1,0 +1,24 @@
+#include <stdio.h> //zwykle 2 porownania, pesymistycznie 3
+#include <stdlib.h>
+
+int main()
+{
+    int t[3], rozmiar=1;
+    wejscie(t);
+    int porownanie1=t[0]==t[1], porownanie2=t[1]==t[2];
+    int warunek=porownanie1+porownanie2;
+    switch (warunek) {
+    case 2:
+        break;
+    default:
+        rozmiar++;
+        if (!warunek && t[0]!=t[2]) rozmiar++;
+        break;
+    }
+    printf("%d", rozmiar);
+    return 0;
+}
+
+void wejscie(int t[]) {
+    for (int i=0; i<3; i++) scanf("%d", &t[i]);
+}

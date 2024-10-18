@@ -1,0 +1,260 @@
+https://www.codepile.net/pile/NY2307E8 
+
+uaktualniony z poprzednich ćwiczeń
+
+struct lista {
+   int val;
+   struct lista *next;
+};
+  
+typedef struct lista Tlista;
+
+
+Zad0. Utwórz listę z konkretnych 3 elementów, np 2,3,5. 
+
+
+Tlista* piec;
+piec = malloc(sizeof(Tlista));
+piec->val = 5;
+piec->next = NULL;
+
+Tlista *trzy = malloc(sizeof(Tlista));
+trzy->val = 3;
+trzy->next = piec;
+
+//Tlista *dwa = malloc(sizeof(Tlista));
+//dwa->val = 2;
+//dwa->next = trzy;
+
+//jeślinie chcemy miec kiolejnej zmiennej to mozna tak:
+piec = malloc(sizeof(Tlista));
+piec->val=2;
+piec->next=trzy;
+
+//int x=piec->val;
+//x == 2
+
+Zad1. Utwórz listę zawierającą wartości z tablicy A długości n liczb całkowitych.
+//A[0] -> A[1] .... -> A[n-1]
+
+0. Napisz funkcję tworzącą listę zawierającą wartości z tablicy A długości n liczb całkowitych.
+
+Tlista* utworz(int A[], int n) {
+    
+    Tlista* l;
+    Tlista* pop = NULL;
+    
+    for (int i = n-1; i >= 0; i--) {
+        l = malloc(sizeof(Tlista))
+        l->val = A[i];
+        l->next = pop;
+        pop = l;
+    }
+    return l; 
+    //return pop; 
+}
+
+
+
+
+a) 
+
+Tlista* l;
+Tlista* pop = NULL;
+
+for (int i = n-1; i >= 0; i--) {
+    l = malloc(sizeof(Tlista))
+    l->val = A[i];
+    l->next = pop;
+    pop = l;
+}
+
+// zbudowana lista jest na pop
+
+b) 
+Tlista* pocz, kon, l;
+if (n>0) {
+pocz = malloc(sizeof(Tlista))
+pocz->val = A[0];
+pocz->next = NULL;
+kon = pocz;
+for (int i = 1; i < n; i++){
+    l = malloc(sizeof(Tlista));
+    kon->next = l;
+    l->val = A[i];
+    l->next = NULL;
+    kon = l;
+    
+}
+}
+
+c) rozwiązanie z atrapą 
+Tlista* pocz, kon, l, atrapa;
+atrapa = malloc(sizeof(Tlista))
+atrapa->val = -1;
+atrapa->next = NULL;
+kon = atrapa;
+for (int i = 0; i < n; i++){
+    l = malloc(sizeof(Tlista));
+    kon->next = l;
+    l->val = A[i];
+    l->next = NULL;
+    kon = l;
+    
+}
+pocz = atrapa->next;
+free(atrapa);
+
+Zad2 Odwróć listę prostą l.
+
+0. 
+Tlista* odwroc(Tlista* l){
+    Tlista* pop, kol;
+    pop = NULL;
+    while (l != NULL) {
+        kol = l->next;
+        l->next = pop;
+        pop = l;
+        l = kol;
+    }
+    return pop;
+}
+main() {
+    TLista* l = utworz(A,n);
+    Tlista* y = odwroc(l);
+    // l jest takie jak było przed odwróc
+}
+
+
+0'. 
+void odwroc'(Tlista** wsk_l) {
+    Tlista* pop, kol, l;
+    l = *wsk_l;
+    pop = NULL;
+    while (l != NULL) {
+        kol = l->next;
+        l->next = pop;
+        pop = l;
+        l = kol;
+    }
+    *wsk_l = pop;
+    return;
+} 
+    
+    
+    
+    
+}
+
+int foo(int n) {
+    n = n+100;
+    return n;
+}
+
+main() {
+    int x;
+    x=2;
+    int y = foo(x);
+    //x ?
+}
+
+
+
+
+1. Tlista* pop, kol;
+pop = NULL;
+while (l != NULL) {
+    kol = l->next;
+    l->next = pop;
+    pop = l;
+    l = kol;
+}
+l = pop;
+
+
+Zad3 Scalanie posortowanych list l1, l2. Chodzi o przekierowanie wskaźników dwóch posortowanych list tak, aby powstała jedna posortowana lista.
+
+
+
+Tlista* atrapa, kon, pocz;
+atrapa = malloc(sizeof(Tlista))
+atrapa->val = -1;
+atrapa->next = NULL;
+kon = atrapa
+while (l1 != NULL && l2 !=NULL) {
+    if (l1->val <= l2->val) {
+        kon->next = l1;
+        l1 = l1->next;
+    } else {
+        kon->next = l2;
+        l2 = l2->next;
+    }
+    kon = kon->next;
+}
+if (l1 == NULL) {
+    kon->next = l2;
+} else {
+    kon->next = l1;
+}
+pocz = atrapa->next;
+free(atrapa);
+
+Zad 4. Napisz procedurę Usuń, która usunie z listy  wszystkie wystąpienia elementu x.
+void usun_X (Tlista** wsk_l, int x){
+    Tlista* atrapa, pop, act;
+    act = *wsk_l;
+    atrapa = malloc(sizeof(Tlista))
+    atrapa->val = -1;
+    atrapa->next = act;
+    pop = atrapa;
+    while (act != NULL){
+        if (act->val == x){
+            pop->next = act->next;
+            free(act);
+            act = pop->next;
+        }
+        else{
+            act = act->next;
+            pop = pop->next;
+        }
+    }
+    *wsk_l = atrapa->next;
+    free(atrapa);
+    return;
+}
+
+
+Zad 5. Napisz procedurę Usuń, która usunie z listy l1 wszystkie elementy pojawiające sie w liście l2. Zakładamy, że listy l1 i l2 są posortowane niemalejąco. 
+
+void usun_l2 (Tlista** wsk_l1, Tlista* l2){
+    Tlista* atrapa, pop, act;
+    act = *wsk_l1;
+    atrapa = malloc(sizeof(Tlista))
+    atrapa->val = -1;
+    atrapa->next = act;
+    pop = atrapa;
+    while(act != NULL && l2 != NULL) {
+        if (act-> val > l2-> val) //przesuwam l2 {
+            l2 = l2->next;
+        }
+        else if (act-> val < l2-> val) //przesuwam act{
+            act = act->next;
+	        pop = pop->next;
+        }
+        else //(act-> val = l2-> val) usuwanie z l1 {
+            pop->next = act->next;
+	        free(act)
+	        act = pop->next
+        }
+        
+    }
+    *wsk_l1 = atrapa->next;
+    free(atrapa);
+    return;
+}
+
+
+
+
+
+

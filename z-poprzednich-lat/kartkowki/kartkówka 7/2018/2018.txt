@@ -1,0 +1,52 @@
+#include <stdio.h>
+//UWAGA: nie było testowane na przykładach, proszę przetestować, bo mi się nie chciało
+#define N 100
+
+int min(int a, int b)
+{
+    return a > b ? b : a;
+}
+
+void minimaRec(int wartosci[], int minima[], int indeks, int n)
+{
+    int i = 2 * indeks; // Żeby nie wyliczać za każdym razem
+    if(i >= n)
+        minima[indeks] = wartosci[indeks];
+    else // 2 * indeks już jest wypełnione w tablicy minima, nie wiem natomiast czy 2 i + 1 jest
+    {
+        int tymczasoweMin = min(wartosci[indeks], minima[i]);
+        if(i + 1 >= n) // jeśli i + 1 jest poza tablicą
+            minima[indeks] = tymczasoweMin;
+        else
+            minima[indeks] = min(tymczasoweMin, minima[i + 1]);
+    }
+}
+
+void minimalnaWartosc(int wartosci[], int minima[], int n)
+{
+    for(int i = n - 1; i >= 0; --i)
+        minimaRec(wartosci, minima, i, n);
+}
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+void wypisz(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        printf("%d ", A[i]);
+    putchar('\n');
+}
+
+int main()
+{
+    int wartosci[N], minima[N], n;
+    scanf("%d", &n);
+    wejscie(wartosci, n);
+    minimalnaWartosc(wartosci, minima, n);
+    wypisz(minima, n);
+    return 0;
+}

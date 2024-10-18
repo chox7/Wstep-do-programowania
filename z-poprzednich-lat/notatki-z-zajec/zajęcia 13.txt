@@ -1,0 +1,105 @@
+https://www.codepile.net/pile/XlD8jDla
+
+Kartkówka:
+
+Proszę napisać funkcję int ile (int a[], int n, int x), która przekaże w wyniku liczbę wystąpień wartości x w tablicy a rozmiaru n > 0. Należy założyć, że tablica a spełnia następujący warunek: dla każdego 0 <= i < n-2, a[i] <= a[i+2].
+    
+n=6
+
+0 1 2 3 4 5 indeksy
+1 4 3 7 3 9 wart a   
+-   -   -
+0   1   2  
+
+k = (n + 1 - r) / 2 //długość tablicy
+
+a[r], a[r+2] ...
+
+
+int ile(int a[], int n, int x)
+{
+	int licznik = 0;
+
+	for (int r = 0; r < 2; r++) {
+		int k = (n - r + 1) / 2; // długość tablicy a[r], a[r+2], ...
+
+		int beg = 0, end = k - 1;
+
+		while (beg < end) { // znajduje pierwsze wystąpienie x w tablicy a[r], a[r+2], ... (jeśli istnieje)
+			int mid = (beg + end) / 2;
+			if (a[r + 2*mid] < x) // a[r + 2*mid] - element tablicy a[r], a[r+2], ... o numerze mid
+				beg = mid + 1;
+			else
+				end = mid;
+		}
+		int pos1 = beg;
+		
+		beg = 0, end = k - 1;
+
+		while (beg < end) { // znajduje ostatnie wystąpienie x w tablicy a[r], a[r+2], ... (jeśli istnieje)
+			int mid = (beg + end + 1) / 2;
+			if (a[r + 2*mid] > x)
+				end = mid - 1;
+			else
+				beg = mid;
+		}
+		int pos2 = beg;
+
+		if (a[pos1] == x) 
+			licznik += (pos2 - pos1) + 1;
+	}
+	return licznik;
+}
+
+Zad1. Tablicę posortowaną rosnąco przesunięto cyklicznie w prawo o k. Wyznacz najmniejsze k, które mogło spowodować takie przesunięcie (dla k >= n oczywiście przesunięcie się zacykla mod n). n>0.
+
+k=2 
+18 99 1 2 3 4 5 6 7
+
+Szukam indeksu najmniejszej wartości, czyli u nas 1; będze porównywać wartości z A[0] 
+if (A[0]>A[n-1]){
+    int l = 0;
+    int p = n - 1;
+    while (l < p) {
+        s = (l + p) / 2;
+        if (A[0] < A[s]) {
+            l = s + 1;
+        }
+        else {
+            p = s;
+        }
+    }
+    k=l;
+}
+else{
+    k = 0;
+}
+
+
+Zad2. Tej samej długości tablice A i B długości n są posortowane rosnąco i zawierają rozłączne wartości całkowite. Ze względu na to, że łączna liczba elementów jest parzysta, możemy dwa środkowe co do wartości elementy spośród nich uznać za mediany: małą m i dużą M. Wyznacz je. (chodzi o element n-ty i n+1-wszy co do wartości w obu tablicach łącznie). 
+
+
+A = 1 2 4 8 9
+B = 0 3 5 6 7 
+
+Dla zbioru {11, 22, 33} 22 jest medianą
+
+A \cup B = {0, 1, 2 ,3, 4, 5, 6, 7, 8, 9}
+
+m(A \cup B) = 4
+M(A \cup B) = 5
+
+
+A = 1 2 3 4 5
+B = 0 6 7 8 9 
+
+napisać to w domu!
+
+
+
+
+
+
+
+
+

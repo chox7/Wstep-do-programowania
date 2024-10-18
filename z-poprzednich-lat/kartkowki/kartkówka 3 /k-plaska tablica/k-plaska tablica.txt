@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+#define N 100
+
+void wejscie(int tab[], int n)
+{
+    for(int i = 0; i < n; i++)
+        scanf("%d", &tab[i]);
+}
+
+int main()
+{
+    int A[N], n, k;
+    scanf("%d%d", &n, &k);
+    wejscie(A, n);
+
+    int k_plaska = 1;
+    if(k)
+    {
+        if(n%k == 0)
+        {
+            if(n)
+            {
+                int i = 0, liczbaOperacji = n - k + 1;
+                while(i < liczbaOperacji && k_plaska)
+                {
+                    int j = 1;
+                    while(j < k && A[i] == A[i + j])
+                        j++;
+                    k_plaska = j == k;
+                    i += k;
+                }
+            }
+        }
+        else
+            k_plaska = 0;
+    }
+
+    printf("%d\n", k_plaska);
+    return 0;
+}

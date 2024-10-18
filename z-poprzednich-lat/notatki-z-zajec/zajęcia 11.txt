@@ -1,0 +1,114 @@
+https://www.codepile.net/pile/Q54QY9GB
+
+Kartkówka:
+Proszę napisać język wszystkich słów nad alfabetem {a,b} postaci ak bm, gdzie k >= 0, m >=0 oraz 2k+1 = 3m-2.
+
+Proszę podać krótkie uzasadnienie poprawności gramatyki. 
+
+X -> b | aaaXbb 
+
+X-> aaaXbb -> aaaaaaXbbbb -> aaaaaabbbb
+
+
+Poprawność:
+
+liczba b to 2n + 1 = m, liczba a to 3n = k
+2k + 1 = 6n + 1
+3m - 2 = 6m + 3 - 2 = 6m + 1
+2k + 1 = 3m - 2
+
+Alternatywnie:
+Baza: b spełnia 2*0+1=3*1-2
+Krok: jeśli v to słowo, w którym liczba a to k,  liczba b to m, tże 2k+1=3m-2, to aaavbb ma liczbę a k+3, liczbę b m+2 i to spełnia 2(k+3) +1 = 3 (m+2)-2
+
+
+Zad0 Napisz gramatykę generującą język słów nad {a,b} w t.że  #(a,w) =  2#(b,w)
+
+aab 
+
+X-> XbXaXaX | XaXbXaX | XaXaXbX | e
+
+
+R -> RaRbR | RbRaR | e 
+
+Zad1. Języki typu a^n b^k c^m takie, że n,k,m spełniają jakieś równania/nierówności liniowe np
+a)  n+k=m, La ={a^n b^k c^k c^n | n,m \in N}
+
+G=<{S,K},{a,b,c},P,S>
+
+P = { 
+      S -> aSc | K 
+      K -> bKc | e 
+    }
+
+b) n+m=k,  Lb ={a^n b^n b^m c^m | n,m \in N}
+
+G = <{S,K,L},{a,b,c},P,K>
+
+P = { 
+      K -> SL
+      S -> aSb | e
+      L -> bLc | e 
+    }
+
+
+c) n+m=k+1
+
+G = <{S,K,L},{a,b,c},P,K>
+
+P = { 
+      K -> aSL | SLc
+      S -> aSb | e
+      L -> bLc | e 
+    }
+
+
+Zad2 Wszystkie słowa w {a,b}* poza abababb.
+
+S1 -> bW | aS2 | e
+S2 -> aW | bS3 | e
+S3 -> bW | aS4 | e
+S4 -> aW | bS5 | e
+S5 -> bW | aS6 | e
+S6 -> aW | bS7 | e
+S7 -> aW | bS8 | e
+S8 -> aW | bW
+W -> aW | bW |e
+
+Zad3 Język poprawnych wyrażeń nawiasowych 
+a) nad '(', ')'
+()
+()()
+(())
+
+A -> (A)A | e
+
+X -> (X)X | e
+
+b) nad '(', ')', '[', ']'
+niepop: (]
+pop: [()[()]]
+
+X -> (X)X | [X]X | e
+
+c) kwadratowych nie można umieszczać wewnątrz okrągłych. 
+
+OK 
+X -> [X]X | YX
+Y -> (Y)Y | e
+    
+// dla X-> y, gr. była niepełna bo ()[] nie da się wyprowadzić z X
+
+X -> [X]X | (Y)X
+Y -> (Y)Y | e
+
+
+
+
+
+
+
+
+
+
+

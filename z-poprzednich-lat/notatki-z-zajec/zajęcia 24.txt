@@ -1,0 +1,198 @@
+https://www.codepile.net/pile/x1wxKlE7
+
+struct element {
+  struct element *lsyn, *psyn;
+   int val;
+}; 
+
+typedef struct element Telement;
+
+typedef Telement* drzewo;
+
+Zad. Policz liczbę NULL w drzewie
+
+Zad. Napisz procedurę przekształcającą zadane drzewo w jego odbicie lustrzane, czyli zamieniające lewych synów z prawymi.
+Przed
+   5
+  / \
+ 6   7
+Po   
+   5
+  / \
+ 7   6
+
+void zamien(Telement* d)
+{
+    if(d != NULL) {
+        zamien(d->lsyn);
+        zamien(d->psyn);
+        Telement *pom;
+        pom = d->lsyn;
+        d->lsyn = d->psyn;
+        d->psyn = pom;
+    }
+}
+
+złożoność czasowa O(n)
+złożoność pamięciowa O(n), lepiej powiedzieć O(h) h - wysokosc drzewa
+
+
+Zad. Napisz funkcję sprawdzającą czy dwa zadane drzewa są izomorficzne (mają taki sam kształt).
+
+Izomorficzne
+   8
+  / \
+ 0   NULL
+  
+   5
+  / \
+ 7   NULL
+
+
+bool izomorficzne(Telement *d1, Telement *d2)
+{
+    if (d1 != NULL && d2 != NULL) {
+        return izomorficzne(d1->lsyn, d2->lsyn) && izomorficzne(d1->psyn, d2->psyn);        
+    } else if (d1 == NULL && d2 == NULL) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+Zad. Rozważmy typ
+
+struct element {
+  struct element *lsyn, *psyn, *next;
+  int val;
+}; 
+
+typedef struct element Telement;
+
+typedef Telement* drzewo;
+
+a) Napisz funkcję łączącą liście drzewa w listę (od lewej do prawej).
+
+Telement* łącz(Telement* d)
+{
+    Telement* lisc = NULL;
+    łącz2(d, &lisc);
+    return lisc;
+}
+
+void łącz2(Telement* d, Telement** wsk_lisc)
+{
+    if (d != NULL) {
+        if (d->psyn == NULL && d->lsyn == NULL) {
+            d->next = *wsk_lisc;
+            *wsk_lisc = d;
+        }
+        else {
+            łącz2(d->psyn, wsk_lisc);
+            łącz2(d->lsyn, wsk_lisc);
+        }
+    }
+}
+
+
+b) Napisz funkcję łączącą wierzchołki drzewa w listę w kolejności infiksowej od lewej do prawej.
+
+Telement* łącz(Telement* d)
+{
+    Telement* lisc = NULL;
+    łącz2(d, &lisc);
+    return lisc;
+}
+
+void łącz2(Telement* d, Telement** wsk_lisc)
+{
+    if (d != NULL) {
+        łącz2(d->psyn, wsk_lisc);
+        d->next = *wsk_lisc;
+        *wsk_lisc = d;
+        łącz2(d->lsyn, wsk_lisc);
+    }
+}
+
+Zad. Napisz funkcję obliczającą średnicę drzewa. Średnica to maksymalna odległość między dwoma wierzchołkami.
+
+int srednica(Telement* d)
+{
+    int wysokosc;
+    return sr(d, &wysokosc);
+}
+
+int sr(Telement *d, int *h)
+{
+    if(d != NULL)
+    {
+        int h_l;
+        int sr_l = sr(d->lsyn, &h_l);
+        
+        int h_p;
+        int sr_p = sr(d->psyn, &h_p);
+        
+        *h = max(h_l, h_p) + 1;
+        return max((h_l + h_p + 2), max(sr_l, sr_p));
+    }
+    else {
+        *h = -1;
+        return 0;
+    }
+}
+
+Zad. Usuwanie drzewa (zwalnianie pamięci)
+
+void usun (Telement *d)
+{
+    if (d != NULL) {
+        usun(d->lsyn);
+        usun(d->psyn);
+        free(d);
+    }
+}
+
+ZAd. Napisz procedurę, która w fastrygowanym drzewie ustawi fastrygę na swojego ojca (a korzeń na NULL).
+
+void ustaw(Telement *d)
+{
+    ojciec(d, NULL);
+}
+
+void ojciec (Telement *d, Telement *o)
+{
+    if (d != NULL) {
+        d->next = o;
+        ojciec(d->lsyn, d);
+        ojciec(d->psyn, d);
+    }
+}
+
+ZAd. Napisz procedurę, która w fastrygowanym drzewie ustawi fastrygę na korzeń (a korzeń na NULL).
+
+void ustaw(Telement *d)
+{
+    Telement *korzen = d;
+    ojciec(d, korzen);
+    
+    if (d != NULL) 
+        d->next = NULL;
+    
+}
+
+void korzeń (Telement *d, Telement *korzen)
+{
+    if (d != NULL) {
+        d->next = korzen;
+        ojciec(d->lsyn, korzen);
+        ojciec(d->psyn, korzen);
+    }
+}
+
+
+
+
+
+
+
+

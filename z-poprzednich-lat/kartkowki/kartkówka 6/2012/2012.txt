@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define N 100
+
+void wejscie(int A[], int n)
+{
+    for(int i = 0; i < n; ++i)
+        scanf("%d", &A[i]);
+}
+
+int main()
+{
+    int T[N], n;
+    scanf("%d", &n);
+    wejscie(T, n);
+
+    bool istnieje;
+    int l = 0, p = n - 2;
+    switch(n)
+    {
+        case 1:
+            istnieje = false;
+            break;
+        case 2:
+            istnieje = T[1] == T[0];
+            break;
+        default:
+            while(l < p)
+            {
+                int s = (l + p) / 2;
+                if(T[s] > T[s + 1])
+                    l = s + 1;
+                else
+                    p = s;
+            }
+            istnieje = T[l] == T[l + 1];
+            break;
+    }
+    printf("%d", istnieje);
+
+    return 0;
+}

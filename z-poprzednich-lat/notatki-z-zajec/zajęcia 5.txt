@@ -1,0 +1,155 @@
+https://www.codepile.net/pile/n8DnbK7A
+
+Kartkówka: W urnach numerowanych od 1 do n znajdują się tylko żetony białe i czerwone. Robot potrafi wykonywać drogą instrukcję Kol(i) przyjmującą wartości ze zbioru {biały, czerwony}.
+
+Białym segmentem nazwiemy każdą taką parę (i,j), że 1<=i<=j<=n oraz dla każdego k: jeśli i<=k<=j, to Kol(k)=biały.
+
+
+Napisz fragment programu, który zmiennej bs nada wartość równą liczbie białych segmentów.
+
+Określ, ile razy w najgorszym przypadku wykona się funkcja Kol. 
+
+
+int i=1;
+int bs=0;
+int licznik=0;
+
+while(i<=n)
+{
+    if (Kol(i) == biały)
+    {
+        licznik = licznik + 1;
+        bs = bs + licznik;
+    }
+    else
+    {
+        licznik = 0;
+    }
+    i = i + 1;
+}
+
+
+
+Dla dużych liczb zapisanych w tablicy liczb całkowitych długości N
+robimy procedury i funkcje
+1. bool Zero(int A[])
+//true wttw gdy w tablicy są same zera
+2. bool Wieksze(int A[], int B[])
+//true wttw gdy liczba A jest większa niż B
+3. bool PoprawnaSuma(int A[], int B[], int C[])
+//Sumujemy liczby zapisane w A i B do C; PoprawnaSuma staje się false, gdy wynik nie mieści się w C - wtedy wartość zapisana w C może być dowolna
+4. bool PoprawnaRóżnica(int A[], int B[], int C[])
+//Odejmjemy B od A, wynik zapisujemy do C; PoprawnaRóżnica staje się false, gdy wynik jest ujemny - wtedy wartość zapisana w C może być dowolna
+
+#define N 100
+#define b 10
+
+int A[N];
+int B[N];
+int C[N];
+
+int b;
+
+//13567 = 7*10^0 + ...
+//A[N-1] A[N-2] ......A[0]
+//A[N-1] = 1
+//A[N-2] = 3 
+//A[0] = 7
+
+
+//Punkt 1
+
+int i = 0;
+bool Zero = false;
+while(i<N && A[i]==0){
+    i++;
+}
+if(i>=N){
+    Zero = true;
+}
+
+
+//Punkt 2
+
+int i=N-1;
+bool Wieksze = false; 
+while(i=>0)&&(A[i]==B[i]) {
+    i=i-1;
+}
+
+if (i<0) {Wieksze = false}
+else {
+    Wieksze = A[i]>B[i];
+}
+
+//alternatywne rozw.
+A = 772   //A[0]=2
+B = 758
+
+while(i>0)&&(A[i]==B[i]) {
+    i=i-1;
+}
+Wieksze = A[i] > B[i];
+
+
+//Punkt 3
+
+int i = 0;
+int pomocnicza=0;
+int suma;
+bool PoprawnaSuma = true;
+while (i<N)
+\\ 0 <= i <= N 
+\\ PoprawnaSuma = true 
+\\ 0 <= pomocnicza <= 1
+\\ 0 <= C[j] < b dla każdego j \in [0..i-1]
+\\ 0 <= A[k] < b, 0<=B[k]<b   0<=k<=N-1
+\\ C[0 .. i-1] = A[0...i-1] + B[0...i-1]  - pomocnicza*b^i 
+{
+    suma = A[i]+B[i]+pomocnicza;
+    if (suma >b)
+    {
+        C[i] = suma - b;
+        pomocnicza = 1;
+    }
+    else
+    {
+        C[i] = suma;
+        pomocnicza = 0;
+    }
+    i = i + 1;
+}
+if (pomocnicza>0)
+{
+    PoprawnaSuma = false;
+}
+
+//rozw w wersji z for
+bool PoprawnaSuma = true;
+int pomocnicza=0;
+int suma;
+for (int i=0; i<N; i++)
+{
+    suma = A[i]+B[i]+pomocnicza;
+    if (suma >b)
+    {
+        C[i] = suma - b;
+        pomocnicza = 1;
+    }
+    else
+    {
+        C[i] = suma;
+        pomocnicza = 0;
+    }
+}
+if (pomocnicza>0)
+{
+    PoprawnaSuma = false;
+}
+
+
+
+
+
+
+

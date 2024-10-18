@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_N 1000
+
+int main() {
+    int n, A[MAX_N], Ile01=0, i=0;
+    scanf("%d", &n);
+    wejscie(n, A);
+    int jedynkiPoprawej=policzJedynki(n, A);
+    while (i<n && jedynkiPoprawej<n-i) {
+        if (!A[i]) Ile01+=jedynkiPoprawej;
+        else jedynkiPoprawej--;
+        i++;
+    }
+    printf("%d", Ile01);
+    return 0;
+}
+
+void wejscie(int n, int tab[]) {
+    for (int i=0; i<n; i++) scanf("%d", &tab[i]);
+}
+
+int policzJedynki(int n, int tab[]) {
+    int suma=0;
+    for (int i=0; i<n; i++)
+        if (tab[i]) suma++;
+    return suma;
+}

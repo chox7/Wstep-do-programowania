@@ -1,0 +1,174 @@
+https://www.codepile.net/pile/mZx5v3bE
+
+struct wezel {
+   struct wezel *lsyn, *psyn;
+   int w;
+}; 
+
+typedef struct wezel Twezel;
+
+typedef Twezel* drzewo;
+
+
+
+Zad1.  Napisz funkcję sprawdzającą czy drzewo jest drzewem BST.
+
+     r
+   l   p
+
+     MININT 
+ NULL      NULL
+ 
+min, max dla podrzewa l;  potrzebujemy max l < r
+
+
+
+dla NULL min:MAXINT
+         max: MININT
+
+bool BST(Twezel* d, int* maksymalny, int *minimalny)
+{
+// wywoływana tylko dla d != NULL
+        if (d->lsyn != NULL && d->psyn != NULL) {
+            int minlewy;
+            int maxlewy;
+            int minprawy;
+            int maxprawy;
+        
+            if (BST(d->lsyn, &maxlewy, &minlewy) && BST(d->rsyn, &maxprawy, &minprawy)) {
+                if (maxlewy < d->w && minprawy > d->w) {
+                    *mininalny = min(d->w, minlewy, minprawy);
+                    *maksymalny = max(d->w, maxlewy, maxprawy);
+                    return true;
+                }
+                else return false;
+            } 
+            else return false;
+        }
+        else if (d->lsyn != NULL) {
+            int minlewy;
+            int maxlewy;
+            if(BST(d->lsyn, &maxlewy, &minlewy) && minlewy < d->w) {
+                *minimalny = min(d->w, minlewy);
+                *maksymalny = max(d->w, maxlewy);
+                return true;
+            }
+            else return false;
+        }
+        else if (d->psyn != NULL) {
+            int minprawy;
+            int maxprawy;
+            if(BST(d->psyn, &maxprawy, &minprawy) && minprawy > d->w) {
+                *minimalny = min(d->w, minprawy);
+                *maksymalny = max(d->w, maxprawy);
+                return true;
+            }
+            else return false;
+        }
+        else {
+            *maksymalny = d->w;
+            *minimalny = d->w;
+            return true;
+        }
+}
+
+
+bool czyjest(Twezel* d) {
+    int minimalny;
+    int maksymalny;
+    
+    if (d != NULL)
+        return BST(d, &minimalny, &maksymalny);
+    else
+        return true;
+}
+
+Koszt czasowy: O(n), pamięciowy: O(h).
+
+Zad2. Napisz funkcję, która sprawdzi, czy w drzewie d1 jest taki węzeł, którego poddrzewo jest izomorficzne z drzewem d2. 
+
+int wysokosc(Twezel *d)
+{
+    if (d == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        int h1 =wysokosc(d->lsyn);
+        int h2 =wysokosc(d->psyn);
+        return max(h1, h2) + 1;
+    }
+}
+
+bool izomorficzne(Telement *d1, Telement *d2)
+{
+    if (d1 != NULL && d2 != NULL) {
+        return izomorficzne(d1->lsyn, d2->lsyn) && izomorficzne(d1->psyn, d2->psyn);        
+    } else if (d1 == NULL && d2 == NULL) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int porownaj_izo (Twezel *d1, Twezel *d2, bool *wyn, int h_2)
+{
+    if(!*wyn){
+        if (d == NULL)
+        {
+            return 0;
+        }
+        else
+        {
+            int h1 = porownaj_izo(d->lsyn, d2, &wyn, h_2);
+            int h2 = porownaj_izo(d->psyn, d2, &wyn, h_2);
+            int h = max(h1,h2) + 1;
+            if (h == h_2)
+            {
+                if (*wyn == false)
+                {
+                    *wyn = izomorficzne(d1,d2);
+                }
+            }
+            return h;
+        }
+    }
+    else{
+        return -1 ;
+    }
+}
+
+
+bool czyjest (Twezel *d1, Twezel *d2){
+    int h_2 = wysokosc(d2);
+    bool wyn = false;
+    if (d2 == NULL)
+    {
+        return true;
+    }
+    porownaj_izo (d1, d2, &wyn, h_2);
+    return wyn;
+}
+
+
+ZadE2(28.01.2019). Napisz funkcję
+
+bool PrawieBST(Twezel* d)
+
+która przyjmie wartośc true, jesli istnieje mozliwośc utworzenia drzewa BST z drzewa d jedynie poprzez dokonywanie zamian jego lewych i prawych synów, a false w przeciwnym razie.
+
+
+ZadE3(28.01.2019) Dla danego drzewa d, niech L(d) będzie zbiorem wartości w liściach d. Napisz funkcję
+
+int ilewspolnych(Twezel* d1, Twezel *d2)
+
+która dla zadanych drzew BST d1 i d2 przekaże w wyniku liczbę elementów przecięcia L(d1) i L(d2).
+
+
+
+
+
+
+
+

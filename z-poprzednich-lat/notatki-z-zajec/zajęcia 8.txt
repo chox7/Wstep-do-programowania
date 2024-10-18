@@ -1,0 +1,130 @@
+https://www.codepile.net/pile/5JdWmmX9
+
+Dane są 2 tablice A,B liczb całkowitych uporządkowanych rosnąco i długości N. Napisz fragment programu obliczający liczbę tych elementów, które występują jednocześnie w A i B (oblicz moc iloczynu A i B).
+
+int A[N] = {1 2 4} 
+int B[N] = {2 5 6}
+wynik = 1 
+
+
+
+
+int wynik = 0;
+int i = 0;
+int j = 0;
+while(i<N && j<N){
+    // A, B posortowane rosnąco 
+    // 0 <= i <=N, 0<=j<=N
+    // moc iloczynu A[0..i-1] i B[0..j-1] = wynik
+    // A[0.. i-1] \cap B[j...N-1] = emptyset
+    // B[0..j-1] \cap A[i...N-1] = emptyset
+    if(A[i]<B[j]){
+        i++;
+    }
+    else if(A[i]>B[j]){
+        j++
+    }
+    else{
+        wynik++;
+        i++;
+        j++;
+    }
+}
+
+// suma A i B (liczba róznych elementów wystepujących w A lub B)
+
+int wynik = 0;
+int i = 0;
+int j = 0;
+while(i<N && j<N){
+    // A, B posortowane rosnąco 
+    // 0 <= i <=N, 0<=j<=N
+    // suma  A[0..i-1] i B[0..j-1] = wynik
+    // A[0.. i-1] \cup B[j...N-1] = emptyset
+    // B[0..j-1] \cup A[i...N-1] = emptyset
+    if(A[i]<B[j]){
+        i++;
+    }
+    else if(A[i]>B[j]){
+        j++
+    }
+    else{
+        i++;
+        j++;
+    }
+    wynik++;
+}
+
+wynik += N-i + N-j;
+
+//WARIANT II: tablice A i B posortowane niemalejąco
+
+A = 2 2 5 7 7 7
+B = 4 4 5 7 7 8 
+moc iloczynu = 2
+
+
+int wynik = 0;
+int i = 0;
+int j = 0;
+int ostatni;
+bool czy_byl = false;
+
+while(i<N && j<N){
+    // A, B posortowane rosnąco 
+    // 0 <= i <=N, 0<=j<=N
+    // moc iloczynu A[0..i-1] i B[0..j-1] = wynik
+    // A[0.. i-1] \cap B[j...N-1] = emptyset
+    // B[0..j-1] \cap A[i...N-1] = emptyset
+    if(A[i]<B[j]){
+        i++;
+    }
+    else if(A[i]>B[j]){
+        j++
+    }
+    else {
+        if(czy_byl){
+            if(A[i]!=ostatni){
+                wynik++;
+                ostatni=A[i];
+            }
+            
+        }
+        else{
+            czy_byl = true;
+            wynik++;
+            ostatni=A[i];
+        }
+        i++;
+        j++;
+        
+    }
+}
+
+https://www.codepile.net/pile/ZnbeZ0E5
+
+Napisz gramatykę generującą język słów L nad 0,1 o nieparzystej długości.
+
+X -> 00X | 0 | 01X | 10X | 11X | 1 
+
+X -> 00X -> 0011X -> 00110
+
+
+L(X) = {0^{2k+1} | k >0}}
+
+poprawność gramatyki: L(X) \subseteq L
+
+Przez indukcję po długości wyprowadzenia z X pokazemy że X ->^n w to w \in L
+Baza: X -> 0 lub X-> 1 Ok, bo słowa 0 o 1 mają długosć nieparzystą
+Krok indukcyjny X ->^{n+1} w. Chcemy pokazać, że w \in L, mając dodspozycji założenie indukcyjne czyli
+wiedząc, że dla każdego v, t. że X->^m v, gdzie m<=n wiemy, że v \in L
+
+1) X -> 00X ->^n w. Wtedy w=00w', X->^n  w'. Z zal. ind. wiem , że w' \in L, czyli że w' jest dł nieparzystej czyli w = 00w' też jest dł. nieparzystej.  
+2) X -> 01X ->^n w
+3) 
+4)
+
+
+pełność gramatyki: L \subseteq L(X)
+bo każde słowo długości nieparzystej jest albo 0 albo 1 albo dłuższe, czyli ma dwie pierwsze litrey \in {0,1} a potem słowo długości nieparzystej 
+

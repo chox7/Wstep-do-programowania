@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define N 100
+
+void wejscie(char A[])
+{
+    char c = getchar();
+    int i = 0;
+    while(c != '\n')
+    {
+        A[i] = c;
+        c = getchar();
+        i++;
+    }
+    A[i] = '\0';
+}
+
+bool czy_zawiera_dwa_kolejne_takie_same_znaki(char napis[])
+{
+    bool wynik = false;
+    int i = 1, dlugosc = strlen(napis);
+    while(i < dlugosc && !wynik)
+    {
+        wynik = napis[i] == napis[i - 1];
+        i++;
+    }
+    return wynik;
+}
+
+int main()
+{
+    char a[N];
+    wejscie(a);
+    printf("\n%d\n", czy_zawiera_dwa_kolejne_takie_same_znaki(a));
+    return 0;
+}

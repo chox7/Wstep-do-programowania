@@ -1,0 +1,116 @@
+https://www.codepile.net/pile/G1gjKowE
+
+ W tablicy P indeksowanej od 0 do N-1 znajduje się permutacja zbioru {0,...,N-1}. Element P[i] koduje wartość permutacji dla elementu i. Cyklem permutacji nazywamy taki ciąg różnych indeksów i1,i2,...ik, że
+
+1) Dla każdego j takiego, że 1<=j<k zachodzi P[ij]=ij+1
+
+2) P[ik]=i1
+
+3)  i1 jest najmniejszy spośród indeksów i1,i2,...ik.
+
+Napisz fragment programu, który obliczy liczbę cykli permutacji zapisanej w tablicy P. Na przykład dla permutacji 3 2 1 0 4 wynikiem powinno być 3. Pierwszy cykl tworzą  elementy 0 i 3, drugi 1 i 2, a trzeci samotny element 4.
+
+
+N=7
+    0 1 2 3 4 5 6
+P = 0 3 4 1 6 2 5  
+
+i1= 0, P[i1]=0, cykl długości 1
+i1=1, P[i1]=3, i2=3 P[i2]=1, i3=1, czyli cykl długości 2
+
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int cykle(int P[],int N){
+	int liczba_cykli=0,i=0;
+    int pom;
+    while(i<N){
+    	if(P[i]<N) liczba_cykli ++;
+    	while(P[i]<N){
+    		pom=P[i];
+    		P[i]+=N;
+    		i=pom;
+		}
+		P[i]-=N;
+		i++;
+	}
+	return liczba_cykli;
+}
+
+int main(){
+	int N;
+    scanf("%d",&N);
+    int P[N];
+    for(int j=0;j<N;j++) scanf("%d",&P[j]);
+    
+	printf("%d",cykle(P,N));
+
+}
+
+Rozwiązanie polega na przechodzeniu przez poszczególne cykle oraz zaznaczanie za sobą śladu przejścia przez dany cykl. Aby nie używać dodatkowej pamięci, korzystamy z faktu, że dane z treści zadania wartości należą do przedziału [0,N-1]. Aby wiedzieć, czy już przeszliśmy przez dany cykl, dodajemy do wartości tablicy w tym cyklu liczbę N. Po natrafieniu na element >= zwiększamy wskaźnik i a po wyjściu z każdej pętli cyklu zwiększamy również licznik, który zlicza cykle. Przy zwiększeniu wskaźnika i „odznaczamy” element tablicy, aby ta wróciła do stanu początkowego, jak poproszono nas w treści.
+
+Pesymistyczny koszt czasowy programu jest liniowy względem N – O(N). Program przechodzi dwukrotnie przez długość tablicy (raz w pętli z cyklami, raz przy zwiększaniu wskaźnika i).
+
+Pesymistyczny koszt pamięciowy jest linowy względem N – O(N). Zależy jedynie od długości tablicy, nie zużywamy dodatkowej pamięci poza pojedynczymi zmiennymi pomocniczymi.
+
+
+https://www.codepile.net/pile/l7Gj3YQG
+
+Zad. Napisz gramatykę generującą język słów L = {w \in {a,b}* | #(a,w)<>#(b,w)}. 
+
+#(a,w) - liczba liter a w słowie w 
+
+S -> A | B 
+
+L(A) = {w \in {a,b}* | #(a,w)>#(b,w)}
+L(B) = {w \in {a,b}* | #(a,w)<#(b,w)}
+
+
+A -> a | aA |  Aa | AbAaA | AaAbA | Aab | baA | bAA | AAb | aAb | 
+bAa
+
+A -> a | bAa| aAb | AA | 
+    
+baaaaaaab nie da się wygenerowac z grmatyki powyżej
+
+A -> XAaX | XaAX | XaX
+X -> aXb | bXa | e | XX
+
+Weźmy dowolne słowo w, w którym liter a jest więcej niż liter b. 
+1. #(a,w)=#(b,w)+1. w = w1....wn
+   np   A -> XAX -> eAX -> aX -> a a^5b^5 
+a) w = av. A -> XAX -> eAX
+b) w = va. A -> XAX -> XAe -> Xa
+c) W = bvb
+
+f(i) = #(a,w_1...w_i) -#(b, w_1... w_i)
+f(0) = 0
+f(w) = 1 
+f(1) = -1
+
+
+
+
+
+
+
+2. #(a,w)>#(b,w)+1. 
+
+
+//ostatnie zajęcia: Wszystkie słowa w {a,b}* t. że #(a,w)=#(b,w). 
+
+X -> aXb | bXa | e | XX
+R -> aRbR | bRaR | e 
+
+
+
+
+
+
+
+
+
+

@@ -6,14 +6,15 @@ int main(){
     
     // Zakładamy, że początkowo ciąg jest rosnący.
     int wynik = 1; 
+    int i = 1;
     
     // Sprawdzamy, czy tablica jest ściśle rosnąca
-    for (int i = 1; i < N; i++) {
+    while (i < N && wynik) {
         // Jeśli znajdziemy element, który nie jest większy od poprzedniego, wynik = 0
         if (A[i-1] >= A[i]) {
             wynik = 0;
-            break; // Nie ma potrzeby dalszego sprawdzania, przerywamy pętlę
         }
+        i++;
     }
     
     printf("%d\n", wynik);

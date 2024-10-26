@@ -14,6 +14,7 @@ int main(void) {
         }
         printf("\n");
     }
+    
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < n - 2; j++) {
             printf(" ");
@@ -23,5 +24,6 @@ int main(void) {
         }
         printf("\n");
     }
+
     return 0;
 }

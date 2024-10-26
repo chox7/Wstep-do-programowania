@@ -2,6 +2,7 @@
 
 int main(void) {
     int a, b, c;
+    
     printf("Podaj trzy liczby w celu obliczenia ich mediany.\n");
     scanf("%d", &a);
     scanf("%d", &b);
@@ -16,6 +17,8 @@ int main(void) {
     } else {
         mediana = c;
     }
+
     printf("Mediana: %d\n", mediana);
+
     return 0;
 }

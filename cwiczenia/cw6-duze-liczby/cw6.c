@@ -37,7 +37,7 @@ void print_array(int a[], int n)
 */
 int zero(int a[]) 
 {
-	int i = N - 1;
+	int i = LOTTO_SIZE - 1;
 	while (i >= 0 && a[i] == 0) // krócej: while (i && !a[i]) z return !a[i]
 	{
 		--i;
@@ -53,7 +53,7 @@ int zero(int a[])
 */
 int wieksze(int a[], int b[]) 
 {
-	int i = N - 1;
+	int i = LOTTO_SIZE - 1;
 	while (i > 0 && a[i] == b[i]) 
 	{
 		--i;
@@ -70,7 +70,7 @@ int wieksze(int a[], int b[])
 int suma(int a[], int b[], int c[]) 
 {
 	int p = 0;
-	for (int i = 0; i <= N - 1; ++i) 
+	for (int i = 0; i <= LOTTO_SIZE - 1; ++i) 
 	{ // Niezmiennik N(i,p): 
 	  //	a[0..i-1] + b[0..i-1] = c[0..i-1] + p*BASE^i
 		c[i] = a[i] + b[i] + p;
@@ -97,7 +97,7 @@ int suma(int a[], int b[], int c[])
 */
 void roznica_minus(int a[], int b[], int c[]) {
 	int p = 0;
-	for (int i = 0; i <= N - 1; ++i) 
+	for (int i = 0; i <= LOTTO_SIZE - 1; ++i) 
 	{ // Niezmiennik N(i,p): 
 	  //	a[0..i-1] + p*BASE^i = b[0..i-1] + c[0..i-1]
 	  //	p \in {0,1} 
@@ -171,17 +171,17 @@ void iloczyn(int a[], int b[], int c[])
 			c[i..]+p*BASE^{i+j} reprezentuje sumę wszystkich a[k]*a[h] 
 				dla których k+h>=i && ((k<i || h<i) || (k==i && h<j) || (h==i && k<j));
 			0<=p<BASE */
-	for (int i = 0; i < N; ++i) // Wystarczy zerować do tylko pozycji i = N-1, 
+	for (int i = 0; i < LOTTO_SIZE; ++i) // Wystarczy zerować do tylko pozycji i = N-1, 
 								// ponieważ dla wyższych pozycji stawiamy już wartość 
 								// (w ostatniej linijce drugiej pętli) 
 	{
 		c[i] = 0;
 	}
-	for (int i = 0; i < N; ++i) 
+	for (int i = 0; i < LOTTO_SIZE; ++i) 
 	{ // N(i) zachodzi (i=0: trywialnie;  
 	  // 			    i+1: N(i+1) wynika z N(i,N) i c[i+N]=p
 	  	int p = 0;
-		for (int j = 0; j < N; ++j) 
+		for (int j = 0; j < LOTTO_SIZE; ++j) 
 		{ // N(i,j) zachodzi (j=0: N(i,0)=N(i) oraz p=0; 
 		  //			      j+1: N(i,j+1) wynika z N(i,j) oraz 
 		  //				  	   z obliczenia poniżej)
@@ -191,7 +191,7 @@ void iloczyn(int a[], int b[], int c[])
 			c[i + j] = w % BASE;
 			p = w / BASE; // p < BASE
 		}
-		c[i + N] = p;
+		c[i + LOTTO_SIZE] = p;
 	}
 }
 
@@ -230,14 +230,14 @@ void iloczyn_bez_p(int a[], int b[], int c[])
 			c[0..i-1] jest prawidłowe; 
 			c[i..] reprezentuje sumę wszystkich a[k]*a[h] 
 				dla których k+h>=i && ((k<i || h<i) || (k==i && h<j) || (h==i && k<j)); */
-	for (int i = 0; i < 2 * N; ++i) 
+	for (int i = 0; i < 2 * LOTTO_SIZE; ++i) 
 	{
 		c[i] = 0;
 	}
-	for (int i = 0; i < N; ++i) 
+	for (int i = 0; i < LOTTO_SIZE; ++i) 
 	{ // N(i) zachodzi (i=0: trywialnie;  
 	  // 			    i+1: N(i+1) wynika z N(i,N)
-		for (int j = 0; j < N; ++j) 
+		for (int j = 0; j < LOTTO_SIZE; ++j) 
 		{ // N(i,j) zachodzi (j=0: N(i,0)=N(i); 
 		  //			      j+1: N(i,j+1) wynika z N(i,j) oraz 
 		  //				  	   z obliczenia poniżej)
@@ -282,10 +282,10 @@ int max(int i, int j)
 void iloczyn_bez_p_przez_c(int a[], int b[], int c[])
 {
 	c[0] = 0;
-	for (int k = 0; k < 2*N; ++k)
+	for (int k = 0; k < 2*LOTTO_SIZE; ++k)
 	{
 		c[k + 1] = 0;
-		for (int i = max(0, k - N); i < N; ++i)
+		for (int i = max(0, k - LOTTO_SIZE); i < LOTTO_SIZE; ++i)
 		{
 			int j = k - i;
 			c[k] += a[i] * b[j];
@@ -304,7 +304,7 @@ void iloczyn_bez_p_przez_c(int a[], int b[], int c[])
 */
 void copy_array(int src[], int dst[])
 {
-	for (int i = 0; i < N; ++i) 
+	for (int i = 0; i < LOTTO_SIZE; ++i) 
 	{
 		dst[i] = src[i];
 	}
@@ -324,17 +324,17 @@ int dzielenie(int a[], int b[], int c[], int rest[])
 		}
 		else 
 		{ // b nie jest zerem
-			int zero_num[N]; // Reprezentuje 0
-			for (int i = 0; i < N; ++i) 
+			int zero_num[LOTTO_SIZE]; // Reprezentuje 0
+			for (int i = 0; i < LOTTO_SIZE; ++i) 
 			{
 				zero_num[i] = 0;
 			}
-			int one_num[N]; // Reprezentuje 1
+			int one_num[LOTTO_SIZE]; // Reprezentuje 1
 			copy_array(zero_num, one_num);
 			one_num[0] = 1;
 			
-			int cur_prod[N], next_prod[N]; 
-			int c_inc[N], c_next_inc[N]; 
+			int cur_prod[LOTTO_SIZE], next_prod[LOTTO_SIZE]; 
+			int c_inc[LOTTO_SIZE], c_next_inc[LOTTO_SIZE]; 
 			
 			copy_array(zero_num, c);
 			copy_array(a, rest);
@@ -365,41 +365,41 @@ int dzielenie(int a[], int b[], int c[], int rest[])
 
 int main(void) 
 {
-	printf("BASE = %d, N=%d\n\n",BASE,N);
+	printf("BASE = %d, N=%d\n\n",BASE,LOTTO_SIZE);
 	
 	//TUTAJ TWOJE TESTY
 	
 	//Przykład
-	int a[N];
-	for (int i = 0; i < N; ++i) 
+	int a[LOTTO_SIZE];
+	for (int i = 0; i < LOTTO_SIZE; ++i) 
 	{
 		a[i] = 0;
 	}
 	
-	int b[N];
+	int b[LOTTO_SIZE];
 	copy_array(a,b);
 	a[0] = 7;
 	a[1] = 1;
 	b[0] = 4;
 	
-	int c[2 * N];
+	int c[2 * LOTTO_SIZE];
 	iloczyn(a, b, c);
 	
 	printf("a=");
-	print_array(a, N);
+	print_array(a, LOTTO_SIZE);
 	printf("b=");
-	print_array(b, N);
+	print_array(b, LOTTO_SIZE);
 	printf("c=");
-	print_array(c, 2 * N);
+	print_array(c, 2 * LOTTO_SIZE);
 	
-	int d[N];
-	int rest[N];
+	int d[LOTTO_SIZE];
+	int rest[LOTTO_SIZE];
 	
 	dzielenie(a, b, d, rest);
 	printf("d=");
-	print_array(d, N);
+	print_array(d, LOTTO_SIZE);
 	printf("rest=");
-	print_array(rest, N);
+	print_array(rest, LOTTO_SIZE);
 	
 	return 0;
 }

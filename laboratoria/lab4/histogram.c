@@ -2,13 +2,15 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define NSUM 11
-#define SCALE 20
+#define NSUM 11 // Liczba mozliwych wynikow od 2 do 12
+#define SCALE 20 // Skala wysokosci histogramu
 
+// Funkcja losujaca liczbe od 1 do n
 int randof(int n) {
-    return (int) (rand() / (RAND_MAX + 1.0) * n);
+    return 1 + (int) (rand() / (RAND_MAX + 1.0) * n);
 }
 
+// Funkcja znajdujaca maksimum danej listy
 int znajdz_maks(int A[], int n) {
     int max = 0;
     for (int i = 0; i < n; i++) {
@@ -19,6 +21,7 @@ int znajdz_maks(int A[], int n) {
     return max;
 }
 
+// Funkcja rysujaca ramke pozioma
 void ramka_pozioma() {
     printf("+");
     for (int i = 0; i < NSUM + 2; i++) {
@@ -42,7 +45,7 @@ int main() {
 
     // Losowanie n razy
     for (int i = 0; i < n; i++) {
-        int sum = randof(6) + 1 + randof(6) + 1;
+        int sum = randof(6) + randof(6);
         A[sum - 2]++;
     }
 
@@ -52,7 +55,7 @@ int main() {
     // Ramka gora
     ramka_pozioma();
 
-    // Histogram
+    // Rysowanie histogramu
     for (int i = SCALE; i > 0; i--) {
         // Ramka lewo
         printf("| ");

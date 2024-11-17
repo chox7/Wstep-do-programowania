@@ -8,17 +8,23 @@ int main(void) {
     scanf("%d", &b);
     scanf("%d", &c);
 
-    int mediana;
-
-    if ((a >= b && a <= c) || (a >= c && a <= b)) {
-        mediana = a;
-    } else if ((b >= a && b <= c) || (b >= c && b <= a)) {
-        mediana = b;
-    } else {
-        mediana = c;
+    // Upewniamy się, ze a <= b, a nastepnie b <= c
+    if (a > b) {
+        int temp = a;
+        a = b;
+        b = temp;
     }
-
-    printf("Mediana: %d\n", mediana);
+    if (b > c) {
+        int temp = b;
+        b = c;
+        c = temp;
+    }
+    if (a > b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    printf("Mediana: %d\n", b);
 
     return 0;
 }

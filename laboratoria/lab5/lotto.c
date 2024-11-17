@@ -71,5 +71,6 @@ int main() {
     for (int i = 0; i < LOTTO_SIZE + 1; i++) {
         printf("%d: %d\n", i, results[i]);
     }
+
     return 0;
 }

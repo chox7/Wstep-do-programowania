@@ -1,23 +1,22 @@
 #include <stdio.h>
 #include <limits.h>
 
-int collatz_steps(int n, int *overflow) {
-    int steps = 0;
-    long long collatz = n; 
+int collatz_steps(int n, int *steps) {
+    int collatz = n;
+    *steps = 0;
     
     while (collatz > 1) {
         if (collatz % 2 == 0) {
             collatz /= 2;
         } else {
-            collatz = 3 * collatz + 1;
-            if (collatz > INT_MAX) {  // Sprawdzamy przekroczenie zakresu int
-                *overflow = 1;
-                return n;
+            if (collatz > (INT_MAX - 1) / 3) {
+                return -1; // Przepełnienie
             }
+            collatz = 3 * collatz + 1;
         }
-        steps++;
+        (*steps)++;
     }
-    return steps;
+    return 0;
 }
 
 int main() {
@@ -32,10 +31,10 @@ int main() {
         int max_steps_start = 0;
 
         for (int i = a; i <= b; i++) {
-            int overflow = 0;
-            int steps = collatz_steps(i, &overflow);
+            int steps;
+            int result = collatz_steps(i, &steps);
 
-            if (overflow) {
+            if (result == -1) {
                 if (!overflow_found || i < min_overflow_start) {
                     min_overflow_start = i;
                     overflow_found = 1;
@@ -45,7 +44,6 @@ int main() {
                 max_steps_start = i;
             }
         }
-
         if (overflow_found) {
             printf("%d?\n", min_overflow_start);
         } else {

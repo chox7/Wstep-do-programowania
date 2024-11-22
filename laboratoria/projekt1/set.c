@@ -11,7 +11,7 @@ typedef struct {
     int shape;       // Shape
 } Card;
 
-// Reads a deck of cards from standard input (stdin).
+// Reads a deck of cards from standard input (stdin) and returns the number of cards read.
 int read_deck(Card deck[]) {
     int card_count = 0;
     int x;
@@ -28,21 +28,16 @@ int read_deck(Card deck[]) {
     return card_count;
 }
 
+// Reverses the order of the deck.
 void reverse_deck(Card deck[], const int deck_size) {
-    int start = 0;
-    int end = deck_size - 1;
-
-    // Swap the cards from the start and end
-    while (start < end) {
-        const Card temp = deck[start];
-        deck[start] = deck[end];
-        deck[end] = temp;
-
-        start++;
-        end--;
+    for (int i = 0; i < deck_size / 2; i++) {
+        const Card temp = deck[i];
+        deck[i] = deck[deck_size - 1 - i];
+        deck[deck_size - 1 - i] = temp;
     }
 }
 
+// Prints the cards currently on the table.
 void print_table(const Card table[], const int table_card_count) {
     printf("=");
     for (int i = 0; i < table_card_count; i++) {
@@ -51,6 +46,7 @@ void print_table(const Card table[], const int table_card_count) {
     printf("\n");
 }
 
+// Prints the cards that form a set.
 void print_set(const Card table[], const int set_indices[]) {
     printf("-");
     for (int i = 0; i < SET_SIZE; i++) {
@@ -59,10 +55,12 @@ void print_set(const Card table[], const int set_indices[]) {
     printf("\n");
 }
 
+// Checks if three attribute values form a valid set (all same or all different).
 int is_attribute_valid(const int a, const int b, const int c) {
     return (a == b && b == c) || (a != b && b != c && a != c);
 }
 
+// Checks if three cards form a valid set.
 int is_set(const Card card1, const Card card2, const Card card3) {
     return !(is_attribute_valid(card1.number, card2.number, card3.number) &&
            is_attribute_valid(card1.color, card2.color, card3.color) &&
@@ -70,6 +68,7 @@ int is_set(const Card card1, const Card card2, const Card card3) {
            is_attribute_valid(card1.shape, card2.shape, card3.shape));
 }
 
+// Finds a set among the cards on the table. Returns 0 if a set is found, 1 otherwise.
 int find_set(const Card table[], const int table_card_count, int set_indices[]) {
     for (int i = 0; i < table_card_count - 2; i++) {
         for (int j = i + 1; j < table_card_count - 1; j++) {
@@ -83,10 +82,10 @@ int find_set(const Card table[], const int table_card_count, int set_indices[]) 
             }
         }
     }
-    return 1; // Set not found
+    return 1; // No set found
 }
 
-// Function to remove set cards from the table.
+// Removes the cards forming a set from the table.
 void remove_set(Card table[], int *table_card_count, const int set_indices[]) {
     int removed = 0;
     for (int i = 0; i < *table_card_count; i++) {
@@ -99,6 +98,7 @@ void remove_set(Card table[], int *table_card_count, const int set_indices[]) {
     *table_card_count -= SET_SIZE;
 }
 
+// Draws cards from the deck to the table.
 void draw_cards(Card table[], int *table_card_count, Card deck[], int *deck_card_count, const int cards_to_add) {
     for (int i = 0; i < cards_to_add && *deck_card_count > 0; i++) {
         table[*table_card_count] = deck[*deck_card_count - 1];
@@ -113,7 +113,7 @@ int main(void) {
     int deck_card_count = read_deck(deck);
     reverse_deck(deck, deck_card_count);
 
-    // Filling table with cards from deck.
+    // Filling table with cards from deck. Initial table setup.
     Card table[MAX_CARDS];
     int table_card_count = 0;
     draw_cards(table, &table_card_count, deck, &deck_card_count, TABLE_SIZE);
@@ -127,7 +127,7 @@ int main(void) {
             print_set(table, set_indices);
             remove_set(table, &table_card_count, set_indices);
 
-            // If there are fewer than 12 cards on the table, draw more.
+            // Draw more cards if the table has fewer than 12 cards
             if (table_card_count < TABLE_SIZE && deck_card_count > 0) {
                 draw_cards(table, &table_card_count, deck, &deck_card_count, SET_SIZE);
             }

@@ -2,7 +2,7 @@
 #include <ctype.h>
 
 #ifndef N
-#define N 2
+#define N 10
 #endif
 
 #define FACES 6

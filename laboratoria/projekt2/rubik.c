@@ -344,15 +344,15 @@ int main(void) {
         }
 
         Command command = {0};
-
-        // Handle LayerCount
-        if (isdigit(input)) {
-            command.LayerCount = input - '0';
-        } else if (isalpha(input)) {
+        if (isalpha(input)) {
             command.LayerCount = 1;
             ungetc(input, stdin);
         } else {
-            return 1;
+            while (isdigit(input)) {
+                command.LayerCount = command.LayerCount * 10 + (input - '0');
+                input = getchar();
+            }
+            ungetc(input, stdin);
         }
 
         // Handle Side (using if-else with defined constants)

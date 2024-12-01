@@ -1,0 +1,26 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     rubik
+relocations:
+  - { offset: 0x26, size: 0x8, addend: 0x0, symName: _initializeCube, symObjAddr: 0x0, symBinAddr: 0x1000023E0, symSize: 0xD0 }
+  - { offset: 0x41, size: 0x8, addend: 0x0, symName: _initializeCube, symObjAddr: 0x0, symBinAddr: 0x1000023E0, symSize: 0xD0 }
+  - { offset: 0xB9, size: 0x8, addend: 0x0, symName: _printSpaces, symObjAddr: 0xD0, symBinAddr: 0x1000024B0, symSize: 0x5C }
+  - { offset: 0xF9, size: 0x8, addend: 0x0, symName: _printRow, symObjAddr: 0x12C, symBinAddr: 0x10000250C, symSize: 0x98 }
+  - { offset: 0x155, size: 0x8, addend: 0x0, symName: _printCube, symObjAddr: 0x1C4, symBinAddr: 0x1000025A4, symSize: 0x16C }
+  - { offset: 0x1CD, size: 0x8, addend: 0x0, symName: _rotateFace, symObjAddr: 0x330, symBinAddr: 0x100002710, symSize: 0x1FC }
+  - { offset: 0x27D, size: 0x8, addend: 0x0, symName: _rotateLayerUp, symObjAddr: 0x52C, symBinAddr: 0x10000290C, symSize: 0x428 }
+  - { offset: 0x3C7, size: 0x8, addend: 0x0, symName: _rotateLayerLeft, symObjAddr: 0x954, symBinAddr: 0x100002D34, symSize: 0x448 }
+  - { offset: 0x511, size: 0x8, addend: 0x0, symName: _rotateLayerFront, symObjAddr: 0xD9C, symBinAddr: 0x10000317C, symSize: 0x460 }
+  - { offset: 0x65B, size: 0x8, addend: 0x0, symName: _rotateLayerDown, symObjAddr: 0x11FC, symBinAddr: 0x1000035DC, symSize: 0x48 }
+  - { offset: 0x69B, size: 0x8, addend: 0x0, symName: _rotateLayerRight, symObjAddr: 0x1244, symBinAddr: 0x100003624, symSize: 0x48 }
+  - { offset: 0x6DB, size: 0x8, addend: 0x0, symName: _rotateLayerBack, symObjAddr: 0x128C, symBinAddr: 0x10000366C, symSize: 0x48 }
+  - { offset: 0x71B, size: 0x8, addend: 0x0, symName: _rotateCubeUp, symObjAddr: 0x12D4, symBinAddr: 0x1000036B4, symSize: 0xA4 }
+  - { offset: 0x777, size: 0x8, addend: 0x0, symName: _rotateCubeLeft, symObjAddr: 0x1378, symBinAddr: 0x100003758, symSize: 0xA8 }
+  - { offset: 0x7D4, size: 0x8, addend: 0x0, symName: _rotateCubeFront, symObjAddr: 0x1420, symBinAddr: 0x100003800, symSize: 0xA8 }
+  - { offset: 0x835, size: 0x8, addend: 0x0, symName: _rotateCubeRight, symObjAddr: 0x14C8, symBinAddr: 0x1000038A8, symSize: 0xA8 }
+  - { offset: 0x896, size: 0x8, addend: 0x0, symName: _rotateCubeBack, symObjAddr: 0x1570, symBinAddr: 0x100003950, symSize: 0xA8 }
+  - { offset: 0x8F7, size: 0x8, addend: 0x0, symName: _rotateCubeDown, symObjAddr: 0x1618, symBinAddr: 0x1000039F8, symSize: 0xA4 }
+  - { offset: 0x958, size: 0x8, addend: 0x0, symName: _rotateCube, symObjAddr: 0x16BC, symBinAddr: 0x100003A9C, symSize: 0x12C }
+  - { offset: 0x9AB, size: 0x8, addend: 0x0, symName: _execute_command, symObjAddr: 0x17E8, symBinAddr: 0x100003BC8, symSize: 0xF0 }
+  - { offset: 0x9E0, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x18D8, symBinAddr: 0x100003CB8, symSize: 0x284 }
+...

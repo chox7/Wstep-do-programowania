@@ -2,7 +2,7 @@
 #include <ctype.h>
 
 #ifndef N
-#define N 5
+#define N 2
 #endif
 
 #define FACES 6
@@ -204,11 +204,11 @@ void rotateLayerFront(RubikCube *cube, int layer, int direction) {
         }
         // DOWN <- RIGHT
         for (int i = 0; i < N; i++) {
-            cube->faces[DOWN][layer][i] = cube->faces[RIGHT][i][layer];
+            cube->faces[DOWN][layer][i] = cube->faces[RIGHT][N - 1 - i][layer];
         }
         // RIGHT <- Stored UP
         for (int i = 0; i < N; i++) {
-            cube->faces[RIGHT][i][layer] = temp[i];
+            cube->faces[RIGHT][i][layer] = temp[N - 1 - i];
         }
     } else if (direction == COUNTERCLOCKWISE) {
         // UP <- RIGHT
@@ -217,7 +217,7 @@ void rotateLayerFront(RubikCube *cube, int layer, int direction) {
         }
         // RIGHT <- DOWN
         for (int i = 0; i < N; i++) {
-            cube->faces[RIGHT][i][layer] = cube->faces[DOWN][layer][i];
+            cube->faces[RIGHT][i][layer] = cube->faces[DOWN][layer][N - 1 - i];
         }
         // DOWN <- LEFT
         for (int i = 0; i < N; i++) {
@@ -225,7 +225,7 @@ void rotateLayerFront(RubikCube *cube, int layer, int direction) {
         }
         // LEFT <- Stored UP
         for (int i = 0; i < N; i++) {
-            cube->faces[LEFT][i][N - 1 - layer] = temp[i];
+            cube->faces[LEFT][i][N - 1 - layer] = temp[N - 1 - i];
         }
     }
 }

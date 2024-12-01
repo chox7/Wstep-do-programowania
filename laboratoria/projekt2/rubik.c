@@ -2,7 +2,7 @@
 #include <ctype.h>
 
 #ifndef N
-#define N 5
+#define N 2
 #endif
 
 #define FACES 6
@@ -160,7 +160,7 @@ void rotateLayerLeft(RubikCube *cube, int layer, int direction) {
         }
         // BACK <- DOWN
         for (int i = 0; i < N; i++) {
-            cube->faces[BACK][N - 1 - i][N - 1 - layer] = cube->faces[DOWN][i][layer];
+            cube->faces[BACK][i][N - 1 - layer] = cube->faces[DOWN][N - 1 - i][layer];
         }
         // DOWN <- Stored FRONT
         for (int i = 0; i < N; i++) {
@@ -177,7 +177,7 @@ void rotateLayerLeft(RubikCube *cube, int layer, int direction) {
         }
         // BACK <- UP
         for (int i = 0; i < N; i++) {
-            cube->faces[BACK][N - 1 - i][N - 1 - layer] = cube->faces[UP][i][layer];
+            cube->faces[BACK][i][N - 1 - layer] = cube->faces[UP][N - 1 - i][layer];
         }
         // UP <- Stored FRONT
         for (int i = 0; i < N; i++) {
@@ -208,7 +208,7 @@ void rotateLayerFront(RubikCube *cube, int layer, int direction) {
         }
         // RIGHT <- Stored UP
         for (int i = 0; i < N; i++) {
-            cube->faces[RIGHT][i][layer] = temp[N - 1 - i];
+            cube->faces[RIGHT][i][layer] = temp[i];
         }
     } else if (direction == COUNTERCLOCKWISE) {
         // UP <- RIGHT

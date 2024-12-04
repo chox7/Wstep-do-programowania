@@ -337,13 +337,22 @@ void rotateCube(RubikCube *cube, const int face, const int layer_count, const in
     }
 }
 
+// void executeCommand(RubikCube *cube, const Command *command) {
+//     int rotations = (command->Angle == ROTATE_180) ? 2 : 1;
+//     int direction = (command->Angle == ROTATE_180) ? CLOCKWISE : command->Angle;
+//
+//     for (int i = 0; i < rotations; i++) {
+//         rotateCube(cube, command->Side, command->LayerCount, direction);
+//     }
+// }
 void executeCommand(RubikCube *cube, const Command *command) {
-    int rotations = (command->Angle == ROTATE_180) ? 2 : 1;
-    int direction = (command->Angle == ROTATE_180) ? CLOCKWISE : command->Angle;
-
-    for (int i = 0; i < rotations; i++) {
-        rotateCube(cube, command->Side, command->LayerCount, direction);
+    if (command->Angle == ROTATE_180) {
+        rotateCube(cube, command->Side, command->LayerCount, CLOCKWISE);
+        rotateCube(cube, command->Side, command->LayerCount, CLOCKWISE);
+    } else {
+        rotateCube(cube, command->Side, command->LayerCount, command->Angle);
     }
+
 }
 
 int parseLayerCount() {

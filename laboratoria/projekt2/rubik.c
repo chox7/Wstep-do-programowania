@@ -43,14 +43,14 @@ RubikCube initializeCube() {
 }
 
 // Print spaces for alignment
-void printSpaces(const int count) {
+void printSpaces(int count) {
     for (int i = 0; i < count; i++) {
         printf(" ");
     }
 }
 
 // Print a single row of a given face
-void printRow(const RubikCube *cube, const int face, const int row) {
+void printRow(const RubikCube *cube, int face, int row) {
     for (int col = 0; col < N; col++) {
         printf("%d", cube->faces[face][row][col]);
     }
@@ -88,7 +88,7 @@ void printCube(const RubikCube *cube) {
 }
 
 // Rotate a face 90 degrees in the given direction
-void rotateFace(int face[N][N], const int direction) {
+void rotateFace(int face[N][N], int direction) {
     int temp[N][N];
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -108,9 +108,8 @@ void rotateFace(int face[N][N], const int direction) {
 }
 
 // Rotate a layer around the UP face
-void rotateLayerUp(RubikCube *cube, const int layer, const int direction) {
+void rotateLayerUp(RubikCube *cube, int layer, int direction) {
     int temp[N];
-
     // Store the FRONT row at the given layer
     for (int i = 0; i < N; i++) {
         temp[i] = cube->faces[FRONT][layer][i];
@@ -118,32 +117,44 @@ void rotateLayerUp(RubikCube *cube, const int layer, const int direction) {
 
     // Rotate a layer (clockwise or counterclockwise)
     if (direction == CLOCKWISE) {
+        // FRONT <- RIGHT
         for (int i = 0; i < N; i++) {
-            // FRONT <- RIGHT
             cube->faces[FRONT][layer][i] = cube->faces[RIGHT][layer][i];
-            // RIGHT <- BACK
+        }
+        // RIGHT <- BACK
+        for (int i = 0; i < N; i++) {
             cube->faces[RIGHT][layer][i] = cube->faces[BACK][layer][i];
-            // BACK <- LEFT
+        }
+        // BACK <- LEFT
+        for (int i = 0; i < N; i++) {
             cube->faces[BACK][layer][i] = cube->faces[LEFT][layer][i];
-            // LEFT <- Stored FRONT
+        }
+        // LEFT <- Stored FRONT
+        for (int i = 0; i < N; i++) {
             cube->faces[LEFT][layer][i] = temp[i];
         }
     } else if (direction == COUNTERCLOCKWISE) {
+        // FRONT <- LEFT
         for (int i = 0; i < N; i++) {
-            // FRONT <- LEFT
             cube->faces[FRONT][layer][i] = cube->faces[LEFT][layer][i];
-            // LEFT <- BACK
+        }
+        // LEFT <- BACK
+        for (int i = 0; i < N; i++) {
             cube->faces[LEFT][layer][i] = cube->faces[BACK][layer][i];
-            // BACK <- RIGHT
+        }
+        // BACK <- RIGHT
+        for (int i = 0; i < N; i++) {
             cube->faces[BACK][layer][i] = cube->faces[RIGHT][layer][i];
-            // RIGHT <- Stored FRONT
+        }
+        // RIGHT <- Stored FRONT
+        for (int i = 0; i < N; i++) {
             cube->faces[RIGHT][layer][i] = temp[i];
         }
     }
 }
 
 // Rotate a layer around the LEFT face
-void rotateLayerLeft(RubikCube *cube, const int layer, const int direction) {
+void rotateLayerLeft(RubikCube *cube, int layer, int direction) {
     int temp[N];
     // Store the FRONT column at the given layer
     for (int i = 0; i < N; i++) {
@@ -152,32 +163,44 @@ void rotateLayerLeft(RubikCube *cube, const int layer, const int direction) {
 
     // Rotate a layer (clockwise or counterclockwise)
     if (direction == CLOCKWISE) {
+        // FRONT <- UP
         for (int i = 0; i < N; i++) {
-            // FRONT <- UP
             cube->faces[FRONT][i][layer] = cube->faces[UP][i][layer];
-            // UP <- BACK
+        }
+        // UP <- BACK
+        for (int i = 0; i < N; i++) {
             cube->faces[UP][i][layer] = cube->faces[BACK][N - 1 - i][N - 1 - layer];
-            // BACK <- DOWN
+        }
+        // BACK <- DOWN
+        for (int i = 0; i < N; i++) {
             cube->faces[BACK][i][N - 1 - layer] = cube->faces[DOWN][N - 1 - i][layer];
-            // DOWN <- Stored FRONT
+        }
+        // DOWN <- Stored FRONT
+        for (int i = 0; i < N; i++) {
             cube->faces[DOWN][i][layer] = temp[i];
         }
     } else if (direction == COUNTERCLOCKWISE) {
+        // FRONT <- DOWN
         for (int i = 0; i < N; i++) {
-            // FRONT <- DOWN
             cube->faces[FRONT][i][layer] = cube->faces[DOWN][i][layer];
-            // DOWN <- BACK
+        }
+        // DOWN <- BACK
+        for (int i = 0; i < N; i++) {
             cube->faces[DOWN][i][layer] = cube->faces[BACK][N - 1 - i][N - 1 - layer];
-            // BACK <- UP
+        }
+        // BACK <- UP
+        for (int i = 0; i < N; i++) {
             cube->faces[BACK][i][N - 1 - layer] = cube->faces[UP][N - 1 - i][layer];
-            // UP <- Stored FRONT
+        }
+        // UP <- Stored FRONT
+        for (int i = 0; i < N; i++) {
             cube->faces[UP][i][layer] = temp[i];
         }
     }
 }
 
 // Rotate a layer around the FRONT face
-void rotateLayerFront(RubikCube *cube, const int layer, const int direction) {
+void rotateLayerFront(RubikCube *cube, int layer, int direction) {
     int temp[N];
     // Store the UP row at the given layer
     for (int i = 0; i < N; i++) {
@@ -186,25 +209,37 @@ void rotateLayerFront(RubikCube *cube, const int layer, const int direction) {
 
     // Rotate a layer (clockwise or counterclockwise)
     if (direction == CLOCKWISE) {
+        // UP <- LEFT
         for (int i = 0; i < N; i++) {
-            // UP <- LEFT
             cube->faces[UP][N - 1 - layer][i] = cube->faces[LEFT][N - 1 - i][N - 1 - layer];
-            // LEFT <- DOWN
+        }
+        // LEFT <- DOWN
+        for (int i = 0; i < N; i++) {
             cube->faces[LEFT][i][N - 1 - layer] = cube->faces[DOWN][layer][i];
-            // DOWN <- RIGHT
+        }
+        // DOWN <- RIGHT
+        for (int i = 0; i < N; i++) {
             cube->faces[DOWN][layer][i] = cube->faces[RIGHT][N - 1 - i][layer];
-            // RIGHT <- Stored UP
+        }
+        // RIGHT <- Stored UP
+        for (int i = 0; i < N; i++) {
             cube->faces[RIGHT][i][layer] = temp[i];
         }
     } else if (direction == COUNTERCLOCKWISE) {
+        // UP <- RIGHT
         for (int i = 0; i < N; i++) {
-            // UP <- RIGHT
             cube->faces[UP][N - 1 - layer][i] = cube->faces[RIGHT][i][layer];
-            // RIGHT <- DOWN
+        }
+        // RIGHT <- DOWN
+        for (int i = 0; i < N; i++) {
             cube->faces[RIGHT][i][layer] = cube->faces[DOWN][layer][N - 1 - i];
-            // DOWN <- LEFT
+        }
+        // DOWN <- LEFT
+        for (int i = 0; i < N; i++) {
             cube->faces[DOWN][layer][i] = cube->faces[LEFT][i][N - 1 - layer];
-            // LEFT <- Stored UP
+        }
+        // LEFT <- Stored UP
+        for (int i = 0; i < N; i++) {
             cube->faces[LEFT][i][N - 1 - layer] = temp[N - 1 - i];
         }
     }

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #ifndef N
-#define N 5
+#define N 2
 #endif
 
 #define FACES 6
@@ -94,7 +94,7 @@ void printCube(const RubikCube *cube) {
 // Return the opposite face
 CubeFace opposite(CubeFace face) {
     // Mapping each face to its opposite
-    CubeFace opposites[] = {BACK, FRONT, RIGHT, LEFT, DOWN, UP};
+    CubeFace opposites[] = {DOWN, RIGHT, BACK, LEFT, FRONT, UP};
 
     return opposites[face];
 }

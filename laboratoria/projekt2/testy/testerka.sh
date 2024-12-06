@@ -127,5 +127,33 @@ for ((N = 3; N <= 10; N++)); do
 			fi
 		fi
 	done
+done
 
+echo "Testy 901-1000: Kostka 11 x 11 x 11. Kropka (znak konca komend) nie koniecznie w oddzielnej linii."
+gcc @opcje -DN=11 kostka_rubika.c -o kostka_rubika
+
+if [ $? -eq 0 ]; then
+	echo "Kompilacja zakonczona sukcesem!"
+else
+	echo "Kompilacja dla N=11 nie powiodla sie :("
+	exit 1
+fi
+
+for ((i = 901; i <= 1000; i++)); do
+	echo -n "Test $i: "
+
+	valgrind --leak-check=full -q --error-exitcode=1 ./kostka_rubika < ./in/test$i.in > kostka.out
+
+	if [ $? -eq 1 ]; then
+		echo "Valgrind wykryl blad w twoim programie :(."
+	else
+		diff kostka.out ./out/test$i.out > /dev/null 2>&1
+		if [ $? -eq 0 ]; then
+			echo "OK."
+		 elif [ $? -eq 1 ]; then
+			echo "ZLE :(."
+		else
+			echo "BLAD?."
+		fi
+	fi
 done

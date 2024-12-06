@@ -8,16 +8,20 @@
 
 #define FACES 6
 
-#define UP 0
-#define LEFT 1
-#define FRONT 2
-#define RIGHT 3
-#define BACK 4
-#define DOWN 5
+typedef enum {
+    UP,
+    LEFT,
+    FRONT,
+    RIGHT,
+    BACK,
+    DOWN
+} CubeFace;
 
-#define CLOCKWISE 1
-#define COUNTERCLOCKWISE (-1)
-#define ROTATE_180 2
+typedef enum {
+    CLOCKWISE ,
+    COUNTERCLOCKWISE,
+    ROTATE_180,
+} RotationAngle;
 
 typedef struct {
     int faces[FACES][N][N];
@@ -25,8 +29,8 @@ typedef struct {
 
 typedef struct {
     int LayerCount;
-    int Side;
-    int Angle;
+    CubeFace Side;
+    RotationAngle Angle;
 } Command;
 
 // Initialize the cube with each face filled
@@ -50,7 +54,7 @@ void printSpaces(int count) {
 }
 
 // Print a single row of a given face
-void printRow(const RubikCube *cube, int face, int row) {
+void printRow(const RubikCube *cube, CubeFace face, int row) {
     for (int col = 0; col < N; col++) {
         printf("%d", cube->faces[face][row][col]);
     }
@@ -87,8 +91,21 @@ void printCube(const RubikCube *cube) {
     }
 }
 
+// Return the opposite face
+CubeFace opposite(CubeFace face) {
+    // Mapping each face to its opposite
+    CubeFace opposites[] = {BACK, FRONT, RIGHT, LEFT, DOWN, UP};
+
+    return opposites[face];
+}
+
+// Toggle the rotation direction between CLOCKWISE and COUNTERCLOCKWISE
+RotationAngle toggleDirection(RotationAngle direction) {
+    return (direction == CLOCKWISE) ? COUNTERCLOCKWISE : CLOCKWISE;
+}
+
 // Rotate a face 90 degrees in the given direction
-void rotateFace(int face[N][N], int direction) {
+void rotateFace(int face[N][N], RotationAngle direction) {
     int temp[N][N];
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -108,7 +125,7 @@ void rotateFace(int face[N][N], int direction) {
 }
 
 // Rotate a layer around the UP face
-void rotateLayerUp(RubikCube *cube, int layer, int direction) {
+void rotateLayerUp(RubikCube *cube, int layer, RotationAngle direction) {
     int temp[N];
     // Store the FRONT row at the given layer
     for (int i = 0; i < N; i++) {
@@ -154,7 +171,7 @@ void rotateLayerUp(RubikCube *cube, int layer, int direction) {
 }
 
 // Rotate a layer around the LEFT face
-void rotateLayerLeft(RubikCube *cube, int layer, int direction) {
+void rotateLayerLeft(RubikCube *cube, int layer, RotationAngle direction) {
     int temp[N];
     // Store the FRONT column at the given layer
     for (int i = 0; i < N; i++) {
@@ -200,7 +217,7 @@ void rotateLayerLeft(RubikCube *cube, int layer, int direction) {
 }
 
 // Rotate a layer around the FRONT face
-void rotateLayerFront(RubikCube *cube, int layer, int direction) {
+void rotateLayerFront(RubikCube *cube, int layer, RotationAngle direction) {
     int temp[N];
     // Store the UP row at the given layer
     for (int i = 0; i < N; i++) {
@@ -246,135 +263,51 @@ void rotateLayerFront(RubikCube *cube, int layer, int direction) {
 }
 
 // Rotate a layer around the DOWN face
-void rotateLayerDown(RubikCube *cube, const int layer, const int direction) {
-    rotateLayerUp(cube, N - layer - 1, direction * -1);
+void rotateLayerDown(RubikCube *cube, int layer, RotationAngle direction) {
+    // This is equivalent to rotating the (N - i - 1)th layer from the opposite direction
+    rotateLayerUp(cube, N - layer - 1, toggleDirection(direction));
 }
 
 // Rotate a layer around the RIGHT face
-void rotateLayerRight(RubikCube *cube, const int layer, const int direction) {
-    rotateLayerLeft(cube, N - layer - 1, direction * -1);
+void rotateLayerRight(RubikCube *cube, int layer, RotationAngle direction) {
+    // This is equivalent to rotating the (N - i - 1)th layer from the opposite direction
+    rotateLayerLeft(cube, N - layer - 1, toggleDirection(direction));
 }
 
 // Rotate a layer around the BACK face
-void rotateLayerBack(RubikCube *cube, const int layer, const int direction) {
-    rotateLayerFront(cube, N - layer - 1, direction * -1);
+void rotateLayerBack(RubikCube *cube, int layer, RotationAngle direction) {
+    // This is equivalent to rotating the (N - i - 1)th layer from the opposite direction
+    rotateLayerFront(cube, N - layer - 1, toggleDirection(direction));
 }
 
-// Rotates the Rubik's Cube around the UP face
-void rotateCubeUp(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the UP face
-    rotateFace(cube->faces[UP], direction);
+void (*rotateLayer[])(RubikCube*, int, RotationAngle) = {
+    rotateLayerUp,
+    rotateLayerLeft,
+    rotateLayerFront,
+    rotateLayerRight,
+    rotateLayerBack,
+    rotateLayerDown
+};
+
+void rotateCube(RubikCube *cube, CubeFace face, int layer_count, RotationAngle direction) {
+    // Rotate the corresponding face
+    rotateFace(cube->faces[face], direction);
 
     // Rotate layers
     for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerUp(cube, layer, direction);
+        rotateLayer[face](cube, layer, direction);
     }
 
-    // If all entire cube is being rotated, rotate the DOWN face in opposite direction
+    // If all entire cube is being rotated, rotate the opposite face in opposite direction
     if (layer_count == N) {
-        rotateFace(cube->faces[DOWN], direction * -1);
-    }
-}
-
-// Rotates the Rubik's Cube around the LEFT face
-void rotateCubeLeft(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the LEFT face
-    rotateFace(cube->faces[LEFT], direction);
-
-    // Rotate layers
-    for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerLeft(cube, layer, direction);
-    }
-
-    // If all entire cube is being rotated, rotate the RIGHT face in opposite direction
-    if (layer_count == N) {
-        rotateFace(cube->faces[RIGHT], direction * -1);
-    }
-}
-
-// Rotates the Rubik's Cube around the FRONT face
-void rotateCubeFront(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the FRONT face
-    rotateFace(cube->faces[FRONT], direction);
-
-    // Rotate layers
-    for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerFront(cube, layer, direction);
-    }
-
-    // If all entire cube is being rotated, rotate the BACK face in opposite direction
-    if (layer_count == N) {
-        rotateFace(cube->faces[BACK], direction * -1);
-    }
-}
-
-// Rotates the Rubik's Cube around the RIGHT face
-void rotateCubeRight(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the RIGHT face
-    rotateFace(cube->faces[RIGHT], direction);
-
-    // Rotate layers
-    for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerRight(cube, layer, direction);
-    }
-
-    // If all entire cube is being rotated, rotate the LEFT face in opposite direction
-    if (layer_count == N) {
-        rotateFace(cube->faces[LEFT], direction * -1);
-    }
-}
-
-// Rotates the Rubik's Cube around the BACK face
-void rotateCubeBack(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the BACK face
-    rotateFace(cube->faces[BACK], direction);
-
-    // Rotate layers
-    for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerBack(cube, layer, direction);
-    }
-
-    // If all entire cube is being rotated, rotate the FRONT face in opposite direction
-    if (layer_count == N) {
-        rotateFace(cube->faces[FRONT], direction * -1);
-    }
-}
-
-// Rotates the Rubik's Cube around the DOWN face
-void rotateCubeDown(RubikCube *cube, const int layer_count, const int direction) {
-    // Rotate the DOWN face
-    rotateFace(cube->faces[DOWN], direction);
-
-    // Rotate layers
-    for (int layer = 0; layer < layer_count; layer++) {
-        rotateLayerDown(cube, layer, direction);
-    }
-
-    // If all entire cube is being rotated, rotate the UP face in opposite direction
-    if (layer_count == N) {
-        rotateFace(cube->faces[UP], direction * -1);
-    }
-}
-
-void rotateCube(RubikCube *cube, const int face, const int layer_count, const int direction) {
-    if (face == UP) {
-        rotateCubeUp(cube, layer_count, direction);
-    } else if (face == LEFT) {
-        rotateCubeLeft(cube, layer_count, direction);
-    } else if (face == FRONT) {
-        rotateCubeFront(cube, layer_count, direction);
-    } else if (face == RIGHT) {
-        rotateCubeRight(cube, layer_count, direction);
-    } else if (face == BACK) {
-        rotateCubeBack(cube, layer_count, direction);
-    } else if (face == DOWN) {
-        rotateCubeDown(cube, layer_count, direction);
+        rotateFace(cube->faces[opposite(face)], toggleDirection(direction));
     }
 }
 
 void executeCommand(RubikCube *cube, const Command *command) {
+    // Convert 180-degree rotation into two 90-degree rotations
     int rotations = (command->Angle == ROTATE_180) ? 2 : 1;
-    int direction = (command->Angle == ROTATE_180) ? CLOCKWISE : command->Angle;
+    RotationAngle direction = (command->Angle == ROTATE_180) ? CLOCKWISE : command->Angle;
 
     for (int i = 0; i < rotations; i++) {
         rotateCube(cube, command->Side, command->LayerCount, direction);
@@ -384,77 +317,93 @@ void executeCommand(RubikCube *cube, const Command *command) {
 int parseLayerCount() {
     int input = getchar();
 
-    if (isalpha(input)) {
-        ungetc(input, stdin);
-        return 1;
-    }
-
     int layerCount = 0;
     while (isdigit(input)) {
         layerCount = layerCount * 10 + (input - '0');
         input = getchar();
     }
+
+    // Push the last non-digit character back to stdin
     ungetc(input, stdin);
+
+    // If layer number no specified, default is 1
+    if (layerCount == 0) {
+        return 1;
+    }
+
     return layerCount;
 }
 
-int parseSide() {
-    const int input = getchar();
+CubeFace parseSide() {
+    int input = getchar();
 
-    switch (input) {
-        case 'u': return UP;
-        case 'l': return LEFT;
-        case 'f': return FRONT;
-        case 'r': return RIGHT;
-        case 'b': return BACK;
-        case 'd': return DOWN;
-        default:
-            fprintf(stderr, "Invalid side\n");
-        exit(1);
-    }
+    if (input == 'u') return UP;
+    if (input == 'l') return LEFT;
+    if (input == 'f') return FRONT;
+    if (input == 'r') return RIGHT;
+    if (input == 'b') return BACK;
+    if (input == 'd') return DOWN;
+
+    return -1;
 }
 
-int parseAngle() {
-    const int input = getchar();
-    if (input == '\'') {
-        return COUNTERCLOCKWISE;
-    }
-    if (input == '"') {
-        return ROTATE_180;
-    }
+RotationAngle parseAngle() {
+    int input = getchar();
+
+    if (input == '\'') return COUNTERCLOCKWISE;
+    if (input == '"') return ROTATE_180;
+
+    // Push the character back to stdin if rotation is clockwise
     ungetc(input, stdin);
-    return CLOCKWISE;
 
+    return CLOCKWISE;
 }
+
 void parseCommand(Command *command) {
     command->LayerCount = parseLayerCount();
     command->Side = parseSide();
     command->Angle = parseAngle();
 }
 
+// Function to check if the end of input is reached
+int isEndOfInput() {
+    int input = getchar();
+
+    if (input == EOF || input == '.') {
+        return 1;
+    }
+
+    // Push the character back to stdin if not EOF or '.'
+    ungetc(input, stdin);
+
+    return 0;
+}
+
+int checkPrintCommand() {
+    int input = getchar();
+    if (input == '\n') {
+        return 1;
+    } else {
+        // Push the character back to stdin if it's not a newline
+        ungetc(input, stdin);
+        return 0;
+    }
+}
+
 // Processes user input to interact with the Rubik's Cube
 void processInput(RubikCube *cube) {
-    int input;
-
-    // Read user input until EOF or '.' is encountered
-    while ((input = getchar()) != EOF) {
-        if (input == '.') {
-            break;
-        }
-        if (input == '\n') {
-            // Print the current state of the cube after new line.
+    while (!isEndOfInput()) {
+        // Check if there is a newline and print the cube if so
+        if (checkPrintCommand()) {
             printCube(cube);
             continue;
         }
-
-        // Push the character back to stdin
-        ungetc(input, stdin);
 
         // Parse user command
         Command command = {0};
         parseCommand(&command);
 
-        //
+        // Execute command
         executeCommand(cube, &command);
     }
 }
@@ -464,16 +413,3 @@ int main(void) {
     processInput(&cube);
     return 0;
 }
-
-// void (*rotateFunctions[])(RubikCube*, int, int) = {
-//     rotateCubeUp,
-//     rotateCubeLeft,
-//     rotateCubeFront,
-//     rotateCubeRight,
-//     rotateCubeBack,
-//     rotateCubeDown
-// };
-//
-// void rotateCube(RubikCube *cube, const int face, const int layer_count, const int direction) {
-//     rotateFunctions[face](cube, layer_count, direction);
-// }

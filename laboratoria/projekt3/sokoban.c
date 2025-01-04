@@ -537,7 +537,7 @@ bool allocateVisitedArray(const Game *game, bool ***visited) {
     }
 
     for (int i = 0; i < game->board->rowCount; i++) {
-        (*visited)[i] = (bool *)calloc(game->board->colsPerRow[i], sizeof(bool));
+        (*visited)[i] = (bool *)calloc((size_t)game->board->colsPerRow[i], sizeof(bool));
         if (!(*visited)[i]) {
             for (int j = 0; j < i; j++) {
                 free((*visited)[j]);

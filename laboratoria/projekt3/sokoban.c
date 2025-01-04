@@ -99,12 +99,12 @@ Memory *initializeMemory(int initialCapacity) {
         return NULL;
     }
 
-    memory->player = malloc(initialCapacity * sizeof(Position));
+    memory->player = malloc((size_t)initialCapacity * sizeof(Position));
     if (memory->player == NULL) {
         return NULL;
     }
 
-    memory->boxLookup = malloc(initialCapacity * sizeof(Position[ALPHABET_SIZE]));
+    memory->boxLookup = malloc((size_t)initialCapacity * sizeof(Position[ALPHABET_SIZE]));
     if (memory->boxLookup == NULL) {
         free(memory->player);
         free(memory);
@@ -191,11 +191,11 @@ void initializeBoxMapRow(bool *boxMapRow, int colCount) {
 
 int allocateBoardRow(const Game *game, int colCount) {
     // Allocate memory for cells
-    game->board->cells[game->board->rowCount] = (CellType *)malloc(colCount * sizeof(CellType));
+    game->board->cells[game->board->rowCount] = (CellType *)malloc((size_t)colCount * sizeof(CellType));
     if (game->board->cells[game->board->rowCount] == NULL) return 1;
 
     // Allocate memory for boxMap row
-    game->boxManager->boxMap[game->board->rowCount] = (bool *)malloc(colCount * sizeof(bool));
+    game->boxManager->boxMap[game->board->rowCount] = (bool *)malloc((size_t)colCount * sizeof(bool));
     if (game->boxManager->boxMap[game->board->rowCount] == NULL) return 1;
 
     initializeBoxMapRow(game->boxManager->boxMap[game->board->rowCount], colCount);
@@ -204,16 +204,16 @@ int allocateBoardRow(const Game *game, int colCount) {
 
 int addRowToBoard(const Game *game, int colCount) {
     // Reallocate memory for board rows and columns
-    CellType **newCells = realloc(game->board->cells, (game->board->rowCount + 1) * sizeof(CellType *));
+    CellType **newCells = realloc(game->board->cells, (size_t)(game->board->rowCount + 1) * sizeof(CellType *));
     if (newCells == NULL) return 1;
 
-    bool **newBoxMap = realloc(game->boxManager->boxMap, (game->board->rowCount + 1) * sizeof(bool *));
+    bool **newBoxMap = realloc(game->boxManager->boxMap, (size_t)(game->board->rowCount + 1) * sizeof(bool *));
     if (newBoxMap == NULL) {
         free(newCells);
         return 1;
     }
 
-    int *newColsPerRow = realloc(game->board->colsPerRow, (game->board->rowCount + 1) * sizeof(int));
+    int *newColsPerRow = realloc(game->board->colsPerRow, (size_t)(game->board->rowCount + 1) * sizeof(int));
     if (newColsPerRow == NULL) {
         free(newCells);
         free(newBoxMap);
@@ -247,7 +247,7 @@ void returnBufferToStdin(char buffer[]) {
 }
 
 int getColumnCount(char buffer[]) {
-    size_t len = strnlen(buffer, 256); // Cap at 256
+    size_t len = strlen(buffer);
     if (len >= 256) {
         return 0; // Invalid row if too long
     }
@@ -333,7 +333,7 @@ char *createStringRow(const Game *game, int rowIndex) {
     int colCount = game->board->colsPerRow[rowIndex];
     int bufferSize = colCount + 1;
 
-    char *row = malloc(bufferSize * sizeof(char));
+    char *row = malloc((size_t)bufferSize * sizeof(char));
     if (!row) {
         return NULL;
     }
@@ -374,7 +374,7 @@ void placePlayerOnBoard(const Game * game, char ** stringBoard) {
 }
 
 char **createStringBoard(const Game *game) {
-    char **stringBoard = malloc(game->board->rowCount * sizeof(char *));
+    char **stringBoard = malloc((size_t)game->board->rowCount * sizeof(char *));
     if (stringBoard == NULL) {
         return NULL;
     }
@@ -531,7 +531,7 @@ Position getPlayerPositionToPush(const Game *game, const Command *command) {
 }
 
 bool allocateVisitedArray(const Game *game, bool ***visited) {
-    *visited = (bool **)malloc(game->board->rowCount * sizeof(bool *));
+    *visited = (bool **)malloc((size_t)game->board->rowCount * sizeof(bool *));
     if (!*visited) {
         return false;
     }
@@ -587,12 +587,12 @@ bool isCommandExecutable(Game *game, const Command *command) {
 
 int saveCurrentState(const Game *game) {
     if (game->memory->count >= game->memory->capacity) {
-        Position *new_player = realloc(game->memory->player, (game->memory->capacity) * 2 * sizeof(Position));
+        Position *new_player = realloc(game->memory->player, (size_t)(game->memory->capacity * 2) * sizeof(Position));
         if (new_player == NULL) {
             return 1;
         }
 
-        Position (*new_boxLookup)[ALPHABET_SIZE] = realloc(game->memory->boxLookup, (game->memory->capacity) * 2 * sizeof(Position[ALPHABET_SIZE]));
+        Position (*new_boxLookup)[ALPHABET_SIZE] = realloc(game->memory->boxLookup, (size_t)(game->memory->capacity * 2) * sizeof(Position[ALPHABET_SIZE]));
         if (new_boxLookup == NULL) {
             return 1;
         }

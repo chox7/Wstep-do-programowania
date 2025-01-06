@@ -248,9 +248,9 @@ void returnBufferToStdin(char buffer[]) {
 
 int getColumnCount(char buffer[]) {
     size_t len = strlen(buffer);
-    if (len >= 256) {
-        return 0; // Invalid row if too long
-    }
+    //if (len >= 256) {
+    //    return 0; // Invalid row if too long
+    //}
 
     if (len == 1 && buffer[0] == '\n') {
         return 0; // Invalid row if it contains only a newline character
@@ -266,15 +266,22 @@ int getColumnCount(char buffer[]) {
 }
 
 int loadBoard(Game *game) {
-    char buffer[256];
-    while (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+    char *buffer = NULL;
+    size_t bufferSize = 0;
+
+    while (getline(&buffer, &bufferSize, stdin) != -1) {
         int colCount = getColumnCount(buffer);
         if (colCount == 0) {
             returnBufferToStdin(buffer);
             break;
         }
-        if (processInputRow(game, buffer, colCount) != 0) return 1;
+        if (processInputRow(game, buffer, colCount) != 0) {
+            free(buffer);
+            return 1;
+        }
     }
+
+    free(buffer);
     return 0;
 }
 
@@ -587,19 +594,19 @@ bool isCommandExecutable(Game *game, const Command *command) {
 
 int saveCurrentState(const Game *game) {
     if (game->memory->count >= game->memory->capacity) {
-        Position *new_player = realloc(game->memory->player, (size_t)(game->memory->capacity * 2) * sizeof(Position));
+        Position *new_player = realloc(game->memory->player, (size_t)(game->memory->capacity + INITIAL_MEM) * sizeof(Position));
         if (new_player == NULL) {
             return 1;
         }
 
-        Position (*new_boxLookup)[ALPHABET_SIZE] = realloc(game->memory->boxLookup, (size_t)(game->memory->capacity * 2) * sizeof(Position[ALPHABET_SIZE]));
+        Position (*new_boxLookup)[ALPHABET_SIZE] = realloc(game->memory->boxLookup, (size_t)(game->memory->capacity + INITIAL_MEM) * sizeof(Position[ALPHABET_SIZE]));
         if (new_boxLookup == NULL) {
             return 1;
         }
 
         game->memory->player = new_player;
         game->memory->boxLookup = new_boxLookup;
-        game->memory->capacity *= 2;
+        game->memory->capacity += INITIAL_MEM;
     }
 
     // Save current state

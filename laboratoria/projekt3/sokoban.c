@@ -1,4 +1,3 @@
-#include <complex.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,9 +14,9 @@ typedef enum {
 } CellType;
 
 typedef struct {
-    CellType **cells;  // 2D array of cells
-    int *colsPerRow; // Array of column counts
-    int rowCount;          // Number of rows
+    CellType **cells; // 2D array of cells
+    int *colsPerRow;  // Array of column counts
+    int rowCount;     // Number of rows
 } Board;
 
 typedef struct {
@@ -26,15 +25,15 @@ typedef struct {
 } Position;
 
 typedef struct {
-    bool **boxMap;                      // 2D Map with the size of board, representing where boxes are placed
+    bool **boxMap;                     // 2D Map with the size of board, representing where boxes are placed
     Position boxLookup[ALPHABET_SIZE]; // Array of positions for each box
 } BoxManager;
 
 typedef struct {
     Position *player;                     // Array of previous player positions
     Position (*boxLookup)[ALPHABET_SIZE]; // Array of pointers to box states
-    int count;               // Number of saved states
-    int capacity;            // Maximum number of states currently supported
+    int count;                            // Number of saved states
+    int capacity;                         // Maximum number of states currently supported
 } Memory;
 
 typedef struct {
@@ -52,8 +51,8 @@ typedef enum {
 } Direction;
 
 typedef struct {
-    char boxName;    //
-    char direction;  //
+    char boxName;    // Name of the box
+    char direction;  // Direction of the move
 } Command;
 
 typedef struct {
@@ -145,11 +144,13 @@ int initGame(Game *game) {
     return 0;
 }
 
+// Function to add a player to the game
 void addPlayer(Game *game, int row, int col) {
     game->player.row = row;
     game->player.col = col;
 }
 
+// Function to add a box to the box manager
 void addBox(BoxManager *boxManager, int row, int col, char name) {
     int index = name - 'a';
     boxManager->boxMap[row][col] = true;
@@ -167,6 +168,7 @@ void setCellType(const Game *game, int row, int col, char type) {
     }
 }
 
+// Function to process each character from buffer to the game board
 void processBufferChar(Game *game, int row, int col, char type) {
     setCellType(game, row, col, type);
 
@@ -177,6 +179,7 @@ void processBufferChar(Game *game, int row, int col, char type) {
     }
 }
 
+// Function to load the cells from the buffer
 void loadCells(Game *game, char buffer[], int n) {
     for (int i = 0; i < n; i++) {
         processBufferChar(game, game->board->rowCount, i, buffer[i]);
@@ -189,6 +192,7 @@ void initializeBoxMapRow(bool *boxMapRow, int colCount) {
     }
 }
 
+// Function to allocate memory for a new row in the board
 int allocateBoardRow(const Game *game, int colCount) {
     // Allocate memory for cells
     game->board->cells[game->board->rowCount] = (CellType *)malloc((size_t)colCount * sizeof(CellType));
@@ -202,6 +206,7 @@ int allocateBoardRow(const Game *game, int colCount) {
     return 0;
 }
 
+// Function to add a new row to the board and allocate memory for it
 int addRowToBoard(const Game *game, int colCount) {
     // Reallocate memory for board rows and columns
     CellType **newCells = realloc(game->board->cells, (size_t)(game->board->rowCount + 1) * sizeof(CellType *));
@@ -228,7 +233,9 @@ int addRowToBoard(const Game *game, int colCount) {
     return allocateBoardRow(game, colCount);
 }
 
-int processInputRow(Game *game, char buffer[], int colCount) {
+// Function to process the input row from stdin
+int processInputRow(Game *game, char buffer[]) {
+    int colCount = (int)strlen(buffer) - 1; // Length of the row (excluding newline character)
     if (addRowToBoard(game, colCount) != 0) return 1;
 
     // Load the cells into the game board
@@ -239,43 +246,22 @@ int processInputRow(Game *game, char buffer[], int colCount) {
     return 0;
 }
 
-void returnBufferToStdin(char buffer[]) {
-    size_t len = strlen(buffer);
-    for (size_t i = 0; i < len; i++) {
-        ungetc(buffer[len - 1 - i], stdin);
-    }
+// Function to check if the end of board input is reached
+int isNewlineOnly(const char *buffer) {
+    return strlen(buffer) == 1 && buffer[0] == '\n';
 }
 
-int getColumnCount(char buffer[]) {
-    size_t len = strlen(buffer);
-    //if (len >= 256) {
-    //    return 0; // Invalid row if too long
-    //}
-
-    if (len == 1 && buffer[0] == '\n') {
-        return 0; // Invalid row if it contains only a newline character
-    }
-
-    for (size_t i = 0; i < len; i++) {
-        if (buffer[i] != '\n' && buffer[i] != '#' && buffer[i] != '-' &&
-            buffer[i] != '+' && buffer[i] != '@' && buffer[i] != '*' && !isalpha(buffer[i])) {
-            return 0; // Invalid character in row
-            }
-    }
-    return (int)len - 1; // Valid row length
-}
-
+// Function to load the board from stdin
 int loadBoard(Game *game) {
     char *buffer = NULL;
     size_t bufferSize = 0;
 
     while (getline(&buffer, &bufferSize, stdin) != -1) {
-        int colCount = getColumnCount(buffer);
-        if (colCount == 0) {
-            returnBufferToStdin(buffer);
+        // If there is a newline only, it means the board is finished
+        if (isNewlineOnly(buffer)) {
             break;
         }
-        if (processInputRow(game, buffer, colCount) != 0) {
+        if (processInputRow(game, buffer) != 0) {
             free(buffer);
             return 1;
         }
@@ -313,6 +299,7 @@ int checkPrintCommand() {
     return 0;
 }
 
+// Function to convert cell type to char representation
 char cellToChar(CellType cell, bool isPlayer, bool isBox, char boxChar) {
     if (isPlayer) {
         switch (cell) {
@@ -336,23 +323,28 @@ char cellToChar(CellType cell, bool isPlayer, bool isBox, char boxChar) {
     }
 }
 
+// Function to create a string row based on the cells of the board
 char *createStringRow(const Game *game, int rowIndex) {
     int colCount = game->board->colsPerRow[rowIndex];
     int bufferSize = colCount + 1;
 
     char *row = malloc((size_t)bufferSize * sizeof(char));
-    if (!row) {
+    if (row == NULL) {
         return NULL;
     }
 
     for (int j = 0; j < colCount; j++) {
-        row[j] = cellToChar(game->board->cells[rowIndex][j], false, false, '\0');
+        row[j] = cellToChar(game->board->cells[rowIndex][j],
+                    false,
+                    false,
+                    '\0');
     }
-    row[colCount] = '\0';
+    row[colCount] = '\0'; // Null-terminate of the string
 
     return row;
 }
 
+// Function to place the boxes on the string board
 void placeBoxesOnBoard(const Game * game, char ** stringBoard) {
     for (int i = 0; i < ALPHABET_SIZE; i++) {
         int row = game->boxManager->boxLookup[i].row;
@@ -369,6 +361,7 @@ void placeBoxesOnBoard(const Game * game, char ** stringBoard) {
     }
 }
 
+// Function to place the player on the string board
 void placePlayerOnBoard(const Game * game, char ** stringBoard) {
     int row = game->player.row;
     int col = game->player.col;
@@ -380,12 +373,14 @@ void placePlayerOnBoard(const Game * game, char ** stringBoard) {
     );
 }
 
+// Function to create the string board
 char **createStringBoard(const Game *game) {
     char **stringBoard = malloc((size_t)game->board->rowCount * sizeof(char *));
     if (stringBoard == NULL) {
         return NULL;
     }
 
+    // Create a string row based on cells of the board
     for (int i = 0; i < game->board->rowCount; i++) {
         stringBoard[i] = createStringRow(game, i);
         if (stringBoard[i] == NULL) {
@@ -410,7 +405,9 @@ void freeStringBoard(char ** stringBoard, int rowCount) {
     free(stringBoard);
 }
 
+// Function to display the board as a string
 int displayBoard(const Game *game) {
+    // Create the string board based on the game state
     char **stringBoard = createStringBoard(game);
     if (stringBoard == NULL) {
         return 1;
@@ -424,6 +421,7 @@ int displayBoard(const Game *game) {
     return 0;
 }
 
+// Function to check if there is an undo command
 int checkUndoCommand() {
     int input = getchar();
 
@@ -437,6 +435,7 @@ int checkUndoCommand() {
     return 0;
 }
 
+// Function to reset the box map
 void resetBoxMap(const BoxManager *boxManager, const Board *board) {
     for (int i = 0; i < board->rowCount; i++) {
         initializeBoxMapRow(boxManager->boxMap[i], board->colsPerRow[i]);
@@ -444,6 +443,7 @@ void resetBoxMap(const BoxManager *boxManager, const Board *board) {
 }
 
 void reconstructBoxMap(const BoxManager *boxManager, const Board *board) {
+    // Reset the box map
     resetBoxMap(boxManager, board);
 
     for (int i = 0; i < ALPHABET_SIZE; i++) {
@@ -456,10 +456,13 @@ void reconstructBoxMap(const BoxManager *boxManager, const Board *board) {
     }
 }
 
+// Function to undo the last command
 void executeUndoCommand(Game *game) {
+    // Check if there is anything to undo
     if (game->memory->count <= 0) {
         return;
     }
+
     game->memory->count--;
     game->player = game->memory->player[game->memory->count];
     for (int i = 0; i < ALPHABET_SIZE; i++) {
@@ -470,6 +473,7 @@ void executeUndoCommand(Game *game) {
     reconstructBoxMap(game->boxManager, game->board);
 }
 
+// Read direction from user input
 Direction readDirection() {
     int input = getchar();
     switch (input) {
@@ -481,21 +485,23 @@ Direction readDirection() {
     }
 }
 
-// Parse user command
+// Read user command
 void readCommand(Command *command) {
     command->boxName = (char)getchar();
     command->direction = readDirection();
 }
 
-bool isValidMove(const Game *game, int row, int col) {
+// Function to check if the move to cell is valid
+int isValidMove(const Game *game, int row, int col) {
     return row >= 0 && row < game->board->rowCount &&
            col >= 0 && col < game->board->colsPerRow[row] &&
            game->board->cells[row][col] != WALL && !game->boxManager->boxMap[row][col];
 }
 
-bool dfs(Game *game, bool **visited, int currRow, int currCol, int destRow, int destCol, Directions *directions) {
+// Recursive depth-first search to find a path from the player to the box
+int dfs(Game *game, bool **visited, int currRow, int currCol, int destRow, int destCol, Directions *directions) {
     if (currRow == destRow && currCol == destCol) {
-        return true;
+        return 1;
     }
 
     visited[currRow][currCol] = true;
@@ -506,14 +512,15 @@ bool dfs(Game *game, bool **visited, int currRow, int currCol, int destRow, int 
 
         if (isValidMove(game, newRow, newCol) && !visited[newRow][newCol]) {
             if (dfs(game, visited, newRow, newCol, destRow, destCol, directions)) {
-                return true;
+                return 1;
             }
         }
     }
 
-    return false;
+    return 0;
 }
 
+// Update the position based on the direction and delta (1 for box, -1 for player)
 Position updatePosition(Position pos, Direction direction, int delta) {
     if (direction == UP) {
         pos.row -= delta;
@@ -527,20 +534,22 @@ Position updatePosition(Position pos, Direction direction, int delta) {
     return pos;
 }
 
+// Get the position of the box after being pushed
 Position getPushedBoxPosition(const Game *game, const Command *command) {
     Position pos = game->boxManager->boxLookup[command->boxName - 'a'];
     return updatePosition(pos, command->direction, 1);
 }
 
+// Get the position of the player pushing the box
 Position getPlayerPositionToPush(const Game *game, const Command *command) {
     Position pos = game->boxManager->boxLookup[command->boxName - 'a'];
     return updatePosition(pos, command->direction, -1);
 }
 
-bool allocateVisitedArray(const Game *game, bool ***visited) {
+int allocateVisitedArray(const Game *game, bool ***visited) {
     *visited = (bool **)malloc((size_t)game->board->rowCount * sizeof(bool *));
     if (!*visited) {
-        return false;
+        return 1;
     }
 
     for (int i = 0; i < game->board->rowCount; i++) {
@@ -550,10 +559,10 @@ bool allocateVisitedArray(const Game *game, bool ***visited) {
                 free((*visited)[j]);
             }
             free(*visited);
-            return false;
+            return 1;
         }
     }
-    return true;
+    return 0;
 }
 
 void freeVisitedArray(const Game *game, bool **visited) {
@@ -564,6 +573,7 @@ void freeVisitedArray(const Game *game, bool **visited) {
 }
 
 Directions initializeDirections() {
+    // Initialize the directions
     Directions directions = {
         .row = {1, -1, 0, 0},
         .col = {0, 0, 1, -1}
@@ -571,28 +581,33 @@ Directions initializeDirections() {
     return directions;
 }
 
-bool isCommandExecutable(Game *game, const Command *command) {
+// Check if the command is executable
+int isCommandExecutable(Game *game, const Command *command) {
     Position pushedBox = getPushedBoxPosition(game, command);
     Position playerPushing = getPlayerPositionToPush(game, command);
 
+    // Check if the moves are valid
     if (!isValidMove(game, pushedBox.row, pushedBox.col) ||
         !isValidMove(game, playerPushing.row, playerPushing.col)) {
-        return false;
+        return 0;
         }
 
     bool **visited;
-    if (!allocateVisitedArray(game, &visited)) {
-        return false;
+    if (allocateVisitedArray(game, &visited)) {
+        return 0;
     }
 
+    // Check if there is a path from the player to the box
     Directions directions = initializeDirections();
-    bool pathExists = dfs(game, visited, game->player.row, game->player.col, playerPushing.row, playerPushing.col, &directions);
+    int pathExists = dfs(game, visited, game->player.row, game->player.col, playerPushing.row, playerPushing.col, &directions);
 
     freeVisitedArray(game, visited);
     return pathExists;
 }
 
+// Function to save the current state
 int saveCurrentState(const Game *game) {
+    // Reallocate memory if needed
     if (game->memory->count >= game->memory->capacity) {
         Position *new_player = realloc(game->memory->player, (size_t)(game->memory->capacity + INITIAL_MEM) * sizeof(Position));
         if (new_player == NULL) {
@@ -609,9 +624,10 @@ int saveCurrentState(const Game *game) {
         game->memory->capacity += INITIAL_MEM;
     }
 
-    // Save current state
+    // Save player position
     game->memory->player[game->memory->count] = game->player;
 
+    // Save box positions
     for (int i = 0; i < ALPHABET_SIZE; i++) {
         game->memory->boxLookup[game->memory->count][i] = game->boxManager->boxLookup[i];
     }
@@ -621,7 +637,9 @@ int saveCurrentState(const Game *game) {
     return 0;
 }
 
+// Function to execute the command
 void executeCommand(Game *game, const Command *command) {
+    // Get the index of the box
     int boxIndex = command->boxName - 'a';
 
     Position oldPos = game->boxManager->boxLookup[boxIndex];
@@ -634,10 +652,11 @@ void executeCommand(Game *game, const Command *command) {
     // Update box position
     game->boxManager->boxLookup[boxIndex] = newPos;
 
-    // Move player
+    // Move player to the old position of the box
     game->player = oldPos;
 }
 
+// Function to process the input commands
 int processInput(Game *game) {
     while (!isEndOfInput()) {
         // Check if there is a newline and print the board if so
@@ -646,10 +665,12 @@ int processInput(Game *game) {
             continue;
         }
 
+        // Check if there is an undo command
         if (checkUndoCommand()) {
             executeUndoCommand(game);
             continue;
         }
+
         // Read user command
         Command command;
         readCommand(&command);
@@ -706,26 +727,34 @@ void freeGame(Game *game) {
 }
 
 int main() {
+    // Memory allocation for the game
     Game *game = malloc(sizeof(Game));
     if (game == NULL) {
         return 1;
     }
 
+    // Initialize the game
     if (initGame(game)) {
         freeGame(game);
         return 1;
     }
 
+    // Load the board from stdin
     if (loadBoard(game)) {
         freeGame(game);
         return 1;
     }
 
+    // The first command is always to print the board
+    displayBoard(game);
+
+    // Process the input commands
     if (processInput(game)) {
         freeGame(game);
         return 1;
     }
 
+    // Free the game memory
     freeGame(game);
     return 0;
 }

@@ -246,14 +246,15 @@ int processInputRow(Game *game, char buffer[]) {
     return 0;
 }
 
-int readLine(char **lineptr, size_t *n, FILE *stream) {
-    int buffer_size = 128;
+int readLine(char **lineptr) {
+    size_t buffer_size = 128;
+    FILE *stream = stdin;
     char *buffer = malloc(buffer_size);
     if (!buffer) {
         return -1;
     }
 
-    int length = 0;
+    size_t length = 0;
     int ch;
     while ((ch = fgetc(stream)) != EOF && ch != '\n') {
         if (length + 1 >= buffer_size) {
@@ -275,8 +276,7 @@ int readLine(char **lineptr, size_t *n, FILE *stream) {
 
     buffer[length] = '\n';
     *lineptr = buffer;
-    *n = buffer_size;
-    return length;
+    return 1;
 }
 
 // Function to check if the end of board input is reached
@@ -287,9 +287,7 @@ int isNewlineOnly(const char *buffer) {
 // Function to load the board from stdin
 int loadBoard(Game *game) {
     char *buffer = NULL;
-    size_t bufferSize = 0;
-
-    while (readLine(&buffer, &bufferSize, stdin) != -1) {
+    while (readLine(&buffer) != -1) {
         // If there is a newline only, it means the board is finished
         if (isNewlineOnly(buffer)) {
             break;

@@ -246,7 +246,7 @@ int processInputRow(Game *game, char buffer[]) {
     return 0;
 }
 
-ssize_t readLine(char **lineptr, size_t *n, FILE *stream) {
+size_t readLine(char **lineptr, size_t *n, FILE *stream) {
     size_t buffer_size = 128;
     char *buffer = malloc(buffer_size);
     if (!buffer) {

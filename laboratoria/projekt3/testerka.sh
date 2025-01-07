@@ -2,7 +2,7 @@
 
 # Zakładając, że masz folder 'przyklady' z testami i oczekiwanymi wynikami
 
-for i in {1..7}; do
+for i in {10..16}; do
   echo "Testowanie testu $i..."
   ./sokoban < przyklady/test$i.in | diff - przyklady/test$i.out
   if [ $? -eq 0 ]; then

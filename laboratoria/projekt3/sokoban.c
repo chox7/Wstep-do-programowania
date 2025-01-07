@@ -236,7 +236,7 @@ int addRowToBoard(const Game *game, int colCount) {
 
 // Function to process the input row from stdin
 int processInputRow(Game *game, char buffer[]) {
-    int colCount = (int)strlen(buffer) - 1; // Length of the row (excluding newline character)
+    int colCount = (int)strlen(buffer); // Length of the row (excluding newline character)
     if (addRowToBoard(game, colCount) != 0) return 1;
 
     // Load the cells into the game board
@@ -247,36 +247,29 @@ int processInputRow(Game *game, char buffer[]) {
     return 0;
 }
 
-int readLine(char **lineptr) {
-    size_t buffer_size = INITIAL_BUFFER_SIZE;
+// Function to read a line from stdin and store it in a buffer
+int readLine(char **buffer, size_t *buffer_size) {
     FILE *stream = stdin;
-    char *buffer = malloc(buffer_size);
-    if (!buffer) {
-        return -1;
-    }
 
     size_t length = 0;
     int ch;
     while ((ch = fgetc(stream)) != EOF && ch != '\n') {
-        if (length + 1 >= buffer_size) {
-            buffer_size += INITIAL_BUFFER_SIZE;
-            char *new_buffer = realloc(buffer, buffer_size * sizeof(char));
+        if (length + 1 >= *buffer_size) {
+            *buffer_size += INITIAL_BUFFER_SIZE;
+            char *new_buffer = realloc(*buffer, *buffer_size * sizeof(char));
             if (!new_buffer) {
-                free(buffer);
                 return -1;
             }
-            buffer = new_buffer;
+            *buffer = new_buffer;
         }
-        buffer[length++] = (char)ch;
+        (*buffer)[length++] = (char)ch;
     }
 
     if (ch == EOF && length == 0) {
-        free(buffer);
         return -1;
     }
 
-    buffer[length] = '\n';
-    *lineptr = buffer;
+    (*buffer)[length] = '\0';
     return 1;
 }
 
@@ -287,11 +280,16 @@ int isNewlineOnly(const char *buffer) {
 
 // Function to load the board from stdin
 int loadBoard(Game *game) {
-    char *buffer = NULL;
-    while (readLine(&buffer) != -1) {
+    size_t buffer_size = INITIAL_BUFFER_SIZE;
+    char *buffer = malloc(buffer_size);
+    if (!buffer) {
+        return -1;
+    }
+    while (readLine(&buffer, &buffer_size) != -1) {
         // If there is a newline only, it means the board is finished
         if (isNewlineOnly(buffer)) {
-            break;
+            free(buffer);
+            return 0;
         }
         if (processInputRow(game, buffer) != 0) {
             free(buffer);
@@ -300,7 +298,7 @@ int loadBoard(Game *game) {
     }
 
     free(buffer);
-    return 0;
+    return 1;
 }
 
 // Function to check if the end of input is reached
@@ -693,7 +691,9 @@ int processInput(Game *game) {
     while (!isEndOfInput()) {
         // Check if there is a newline and print the board if so
         if (checkPrintCommand()) {
-            displayBoard(game);
+            if (displayBoard(game)) {
+                return 1;
+            }
             continue;
         }
 
@@ -778,7 +778,10 @@ int main() {
     }
 
     // The first command is always to print the board
-    displayBoard(game);
+    if (displayBoard(game)) {
+        freeGame(game);
+        return 1;
+    }
 
     // Process the input commands
     if (processInput(game)) {

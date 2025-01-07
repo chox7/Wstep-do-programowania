@@ -247,6 +247,7 @@ int processInputRow(Game *game, char buffer[]) {
     return 0;
 }
 
+// Function to read a line from stdin and store it in a buffer
 int readLine(char **lineptr) {
     size_t buffer_size = INITIAL_BUFFER_SIZE;
     FILE *stream = stdin;
@@ -693,7 +694,9 @@ int processInput(Game *game) {
     while (!isEndOfInput()) {
         // Check if there is a newline and print the board if so
         if (checkPrintCommand()) {
-            displayBoard(game);
+            if (displayBoard(game)) {
+                return 1;
+            }
             continue;
         }
 
@@ -778,7 +781,10 @@ int main() {
     }
 
     // The first command is always to print the board
-    displayBoard(game);
+    if (displayBoard(game)) {
+        freeGame(game);
+        return 1;
+    }
 
     // Process the input commands
     if (processInput(game)) {

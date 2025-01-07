@@ -6,6 +6,7 @@
 
 #define ALPHABET_SIZE 26  // Number of letters from 'a' to 'z'
 #define INITIAL_MEM 10
+#define INITIAL_BUFFER_SIZE 128
 
 typedef enum {
     WALL,
@@ -247,7 +248,7 @@ int processInputRow(Game *game, char buffer[]) {
 }
 
 int readLine(char **lineptr) {
-    size_t buffer_size = 128;
+    size_t buffer_size = INITIAL_BUFFER_SIZE;
     FILE *stream = stdin;
     char *buffer = malloc(buffer_size);
     if (!buffer) {
@@ -258,7 +259,7 @@ int readLine(char **lineptr) {
     int ch;
     while ((ch = fgetc(stream)) != EOF && ch != '\n') {
         if (length + 1 >= buffer_size) {
-            buffer_size *= 2;
+            buffer_size += INITIAL_BUFFER_SIZE;
             char *new_buffer = realloc(buffer, buffer_size * sizeof(char));
             if (!new_buffer) {
                 free(buffer);

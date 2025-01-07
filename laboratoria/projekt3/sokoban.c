@@ -258,7 +258,7 @@ int readLine(char **buffer, size_t *buffer_size) {
             *buffer_size += INITIAL_BUFFER_SIZE;
             char *new_buffer = realloc(*buffer, *buffer_size * sizeof(char));
             if (!new_buffer) {
-                return -1;
+                return 1;
             }
             *buffer = new_buffer;
         }
@@ -266,16 +266,16 @@ int readLine(char **buffer, size_t *buffer_size) {
     }
 
     if (ch == EOF && length == 0) {
-        return -1;
+        return 1;
     }
 
     (*buffer)[length] = '\0';
-    return 1;
+    return 0;
 }
 
 // Function to check if the end of board input is reached
 int isNewlineOnly(const char *buffer) {
-    return strlen(buffer) == 1 && buffer[0] == '\n';
+    return strlen(buffer) == 0;
 }
 
 // Function to load the board from stdin
@@ -283,9 +283,9 @@ int loadBoard(Game *game) {
     size_t buffer_size = INITIAL_BUFFER_SIZE;
     char *buffer = malloc(buffer_size);
     if (!buffer) {
-        return -1;
+        return 1;
     }
-    while (readLine(&buffer, &buffer_size) != -1) {
+    while (readLine(&buffer, &buffer_size) != 1) {
         // If there is a newline only, it means the board is finished
         if (isNewlineOnly(buffer)) {
             free(buffer);

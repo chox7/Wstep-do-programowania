@@ -1,0 +1,54 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     sokoban
+relocations:
+  - { offset: 0x26, size: 0x8, addend: 0x0, symName: _initializeBoard, symObjAddr: 0x0, symBinAddr: 0x1000019A4, symSize: 0x68 }
+  - { offset: 0xCA, size: 0x8, addend: 0x0, symName: _initializeBoard, symObjAddr: 0x0, symBinAddr: 0x1000019A4, symSize: 0x68 }
+  - { offset: 0xF2, size: 0x8, addend: 0x0, symName: _initializeBoxManager, symObjAddr: 0x68, symBinAddr: 0x100001A0C, symSize: 0xB4 }
+  - { offset: 0x136, size: 0x8, addend: 0x0, symName: _initializeMemory, symObjAddr: 0x11C, symBinAddr: 0x100001AC0, symSize: 0xE8 }
+  - { offset: 0x16C, size: 0x8, addend: 0x0, symName: _initGame, symObjAddr: 0x204, symBinAddr: 0x100001BA8, symSize: 0xD0 }
+  - { offset: 0x194, size: 0x8, addend: 0x0, symName: _addPlayer, symObjAddr: 0x2D4, symBinAddr: 0x100001C78, symSize: 0x30 }
+  - { offset: 0x1D4, size: 0x8, addend: 0x0, symName: _addBox, symObjAddr: 0x304, symBinAddr: 0x100001CA8, symSize: 0x78 }
+  - { offset: 0x230, size: 0x8, addend: 0x0, symName: _setCellType, symObjAddr: 0x37C, symBinAddr: 0x100001D20, symSize: 0x130 }
+  - { offset: 0x27E, size: 0x8, addend: 0x0, symName: _processBufferChar, symObjAddr: 0x4AC, symBinAddr: 0x100001E50, symSize: 0xD4 }
+  - { offset: 0x2CC, size: 0x8, addend: 0x0, symName: _loadCells, symObjAddr: 0x580, symBinAddr: 0x100001F24, symSize: 0x7C }
+  - { offset: 0x328, size: 0x8, addend: 0x0, symName: _initializeBoxMapRow, symObjAddr: 0x5FC, symBinAddr: 0x100001FA0, symSize: 0x58 }
+  - { offset: 0x376, size: 0x8, addend: 0x0, symName: _allocateBoardRow, symObjAddr: 0x654, symBinAddr: 0x100001FF8, symSize: 0x110 }
+  - { offset: 0x3AC, size: 0x8, addend: 0x0, symName: _addRowToBoard, symObjAddr: 0x764, symBinAddr: 0x100002108, symSize: 0x190 }
+  - { offset: 0x40C, size: 0x8, addend: 0x0, symName: _processInputRow, symObjAddr: 0x8F4, symBinAddr: 0x100002298, symSize: 0x88 }
+  - { offset: 0x450, size: 0x8, addend: 0x0, symName: _readLine, symObjAddr: 0x97C, symBinAddr: 0x100002320, symSize: 0x174 }
+  - { offset: 0x4CD, size: 0x8, addend: 0x0, symName: _isNewlineOnly, symObjAddr: 0xAF0, symBinAddr: 0x100002494, symSize: 0x24 }
+  - { offset: 0x4F7, size: 0x8, addend: 0x0, symName: _loadBoard, symObjAddr: 0xB14, symBinAddr: 0x1000024B8, symSize: 0xE4 }
+  - { offset: 0x53F, size: 0x8, addend: 0x0, symName: _isEndOfInput, symObjAddr: 0xBF8, symBinAddr: 0x10000259C, symSize: 0x74 }
+  - { offset: 0x569, size: 0x8, addend: 0x0, symName: _checkPrintCommand, symObjAddr: 0xC6C, symBinAddr: 0x100002610, symSize: 0x60 }
+  - { offset: 0x593, size: 0x8, addend: 0x0, symName: _cellToChar, symObjAddr: 0xCCC, symBinAddr: 0x100002670, symSize: 0x164 }
+  - { offset: 0x5EA, size: 0x8, addend: 0x0, symName: _createStringRow, symObjAddr: 0xE30, symBinAddr: 0x1000027D4, symSize: 0xFC }
+  - { offset: 0x66D, size: 0x8, addend: 0x0, symName: _placeBoxesOnBoard, symObjAddr: 0xF2C, symBinAddr: 0x1000028D0, symSize: 0x108 }
+  - { offset: 0x708, size: 0x8, addend: 0x0, symName: _placePlayerOnBoard, symObjAddr: 0x1034, symBinAddr: 0x1000029D8, symSize: 0x7C }
+  - { offset: 0x75B, size: 0x8, addend: 0x0, symName: _createStringBoard, symObjAddr: 0x10B0, symBinAddr: 0x100002A54, symSize: 0x13C }
+  - { offset: 0x7CE, size: 0x8, addend: 0x0, symName: _freeStringBoard, symObjAddr: 0x11EC, symBinAddr: 0x100002B90, symSize: 0x6C }
+  - { offset: 0x820, size: 0x8, addend: 0x0, symName: _displayBoard, symObjAddr: 0x1258, symBinAddr: 0x100002BFC, symSize: 0xC4 }
+  - { offset: 0x876, size: 0x8, addend: 0x0, symName: _checkUndoCommand, symObjAddr: 0x131C, symBinAddr: 0x100002CC0, symSize: 0x60 }
+  - { offset: 0x8A0, size: 0x8, addend: 0x0, symName: _resetBoxMap, symObjAddr: 0x137C, symBinAddr: 0x100002D20, symSize: 0x7C }
+  - { offset: 0x8F2, size: 0x8, addend: 0x0, symName: _reconstructBoxMap, symObjAddr: 0x13F8, symBinAddr: 0x100002D9C, symSize: 0xFC }
+  - { offset: 0x961, size: 0x8, addend: 0x0, symName: _executeUndoCommand, symObjAddr: 0x14F4, symBinAddr: 0x100002E98, symSize: 0xFC }
+  - { offset: 0x9A4, size: 0x8, addend: 0x0, symName: _readDirection, symObjAddr: 0x15F0, symBinAddr: 0x100002F94, symSize: 0x94 }
+  - { offset: 0x9CE, size: 0x8, addend: 0x0, symName: _readCommand, symObjAddr: 0x16A0, symBinAddr: 0x100003044, symSize: 0x34 }
+  - { offset: 0x9F4, size: 0x8, addend: 0x0, symName: _isValidMove, symObjAddr: 0x16D4, symBinAddr: 0x100003078, symSize: 0x110 }
+  - { offset: 0xA3C, size: 0x8, addend: 0x0, symName: _dfs, symObjAddr: 0x17E4, symBinAddr: 0x100003188, symSize: 0x17C }
+  - { offset: 0xB09, size: 0x8, addend: 0x0, symName: _updatePosition, symObjAddr: 0x1960, symBinAddr: 0x100003304, symSize: 0xD0 }
+  - { offset: 0xB51, size: 0x8, addend: 0x0, symName: _getPushedBoxPosition, symObjAddr: 0x1A30, symBinAddr: 0x1000033D4, symSize: 0x5C }
+  - { offset: 0xB99, size: 0x8, addend: 0x0, symName: _getPlayerPositionToPush, symObjAddr: 0x1A8C, symBinAddr: 0x100003430, symSize: 0x5C }
+  - { offset: 0xBE1, size: 0x8, addend: 0x0, symName: _allocateVisitedArray, symObjAddr: 0x1AE8, symBinAddr: 0x10000348C, symSize: 0x154 }
+  - { offset: 0xC54, size: 0x8, addend: 0x0, symName: _freeVisitedArray, symObjAddr: 0x1C3C, symBinAddr: 0x1000035E0, symSize: 0x74 }
+  - { offset: 0xCA6, size: 0x8, addend: 0x0, symName: _initializeDirections, symObjAddr: 0x1CB0, symBinAddr: 0x100003654, symSize: 0x1C }
+  - { offset: 0xCD0, size: 0x8, addend: 0x0, symName: _isCommandExecutable, symObjAddr: 0x1CCC, symBinAddr: 0x100003670, symSize: 0x100 }
+  - { offset: 0xD54, size: 0x8, addend: 0x0, symName: _saveCurrentState, symObjAddr: 0x1DCC, symBinAddr: 0x100003770, symSize: 0x1CC }
+  - { offset: 0xDC7, size: 0x8, addend: 0x0, symName: _executeCommand, symObjAddr: 0x1F98, symBinAddr: 0x10000393C, symSize: 0xC0 }
+  - { offset: 0xE29, size: 0x8, addend: 0x0, symName: _processInput, symObjAddr: 0x2058, symBinAddr: 0x1000039FC, symSize: 0xFC }
+  - { offset: 0xE70, size: 0x8, addend: 0x0, symName: _freeBoard, symObjAddr: 0x2154, symBinAddr: 0x100003AF8, symSize: 0xDC }
+  - { offset: 0xEB3, size: 0x8, addend: 0x0, symName: _freeBoxManager, symObjAddr: 0x2230, symBinAddr: 0x100003BD4, symSize: 0xB4 }
+  - { offset: 0xF05, size: 0x8, addend: 0x0, symName: _freeMemory, symObjAddr: 0x22E4, symBinAddr: 0x100003C88, symSize: 0x90 }
+  - { offset: 0xF2B, size: 0x8, addend: 0x0, symName: _freeGame, symObjAddr: 0x2374, symBinAddr: 0x100003D18, symSize: 0x70 }
+  - { offset: 0xF51, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x23E4, symBinAddr: 0x100003D88, symSize: 0x10C }
+...

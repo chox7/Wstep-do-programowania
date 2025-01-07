@@ -246,14 +246,14 @@ int processInputRow(Game *game, char buffer[]) {
     return 0;
 }
 
-size_t readLine(char **lineptr, size_t *n, FILE *stream) {
-    size_t buffer_size = 128;
+int readLine(char **lineptr, size_t *n, FILE *stream) {
+    int buffer_size = 128;
     char *buffer = malloc(buffer_size);
     if (!buffer) {
         return -1;
     }
 
-    size_t length = 0;
+    int length = 0;
     int ch;
     while ((ch = fgetc(stream)) != EOF && ch != '\n') {
         if (length + 1 >= buffer_size) {
@@ -270,10 +270,10 @@ size_t readLine(char **lineptr, size_t *n, FILE *stream) {
 
     if (ch == EOF && length == 0) {
         free(buffer);
-        return -1;  // Koniec pliku bez wczytanej linii
+        return -1;
     }
 
-    buffer[length] = '\n';  // Dodaj znak końca łańcucha
+    buffer[length] = '\n';
     *lineptr = buffer;
     *n = buffer_size;
     return length;
